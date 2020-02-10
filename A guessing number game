@@ -1,4 +1,5 @@
 //This a guessing number game, write it for fun
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
