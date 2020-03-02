@@ -12,7 +12,7 @@ void Delay(void);       //Delay for a while
 
 int main()
 {
-    Sleep(3000); //Free up time to record
+    Sleep(3000); //Free up time to record a video, remove this line is OK, with no error happens.
     char s_1[] = { "\t\t\t\t\t\t\t☆ 岁月带走了年少轻狂 也慢慢沉淀了冷暖自知" };
     char s_2[] = { "\t\t\t\t\t\t\t☆ 生活都有不尽人意 但依旧需要满怀信心" };
     char s_3[] = { "\t\t\t\t\t\t\t☆ 迎新的笔写不出惆怅 在新的一年里" };
