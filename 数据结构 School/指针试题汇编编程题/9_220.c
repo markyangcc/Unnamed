@@ -41,7 +41,7 @@ void *insert(char *s)
     return s_new; //返回新字符串首字符指针
 }
 
-char *input_s()
+char *input_s(void)
 {
     static char s[SIZE];
 
