@@ -7,14 +7,14 @@
 #include <string.h>
 #define SIZE 50
 
-char *input_s(void);
-void *insert(char *s);
-void output(char *s);
+char* input_s(void);
+void* insert(char* s);
+void output(char* s);
 
 int main(void)
 {
-    char *str;
-    char *str_new;
+    char* str;
+    char* str_new;
 
     str = input_s();
     str_new = insert(str);
@@ -24,24 +24,24 @@ int main(void)
     return 0;
 }
 
-void *insert(char *s)
+void* insert(char* s)
 {
     int s_len = strlen(s);
-    char *s_new = (char *)malloc(2 * s_len * sizeof(char)); //malloc()可以使不必在主函数声明字符串数组
+    char* s_new = (char*)malloc((2* s_len)* sizeof(char) ); //malloc()可以使不必在主函数声明字符串数组
 
-    char *s_new_begin = s_new;
+    char* s_new_begin = s_new;
     for (int i = 0; i < s_len; i++)
     {
         *s_new++ = *s++;
         *s_new++ = ' ';
     }
-    *s_new-- = '\0';     //将被空格覆盖的 \0 重新赋值回来
+    *(--s_new) = '\0';     //将被空格覆盖的 \0 重新赋值回来
     s_new = s_new_begin; //将 s_new 指针指回去，可有可无，无用 s_new_begin 替代，等效
-
+  
     return s_new; //返回新字符串首字符指针
 }
 
-char *input_s(void)
+char* input_s(void)
 {
     static char s[SIZE];
 
@@ -51,7 +51,7 @@ char *input_s(void)
     return s;
 }
 
-void output(char *s)
+void output(char* s)
 {
     puts(s);
 }
