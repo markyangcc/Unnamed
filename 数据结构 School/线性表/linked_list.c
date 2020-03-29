@@ -1,191 +1,119 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-struct test_struct
+// A linked list node
+struct Node
 {
-    int val;
-    struct test_struct *next;
+	int data;
+	struct Node *next;
 };
 
-struct test_struct *head = NULL;
-struct test_struct *curr = NULL;
-
-struct test_struct* create_list(int val)
+/* Given a node prev_node, insert a new node after the given 
+prev_node */
+void insertAfter(struct Node *prev_node, int new_data)
 {
-    printf("\n creating list with headnode as [%d]\n",val);
-    struct test_struct *ptr = (struct test_struct*)malloc(sizeof(struct test_struct));
-    if(NULL == ptr)
-    {
-        printf("\n Node creation failed \n");
-        return NULL;
-    }
-    ptr->val = val;
-    ptr->next = NULL;
+	/*1. check if the given prev_node is NULL */
+	if (prev_node == NULL)
+	{
+		printf("the given previous node cannot be NULL");
+		return;
+	}
 
-    head = curr = ptr;
-    return ptr;
+	/* 2. allocate new node */
+	struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+
+	/* 3. put in the data */
+	new_node->data = new_data;
+
+	/* 4. Make next of new node as next of prev_node */
+	new_node->next = prev_node->next;
+
+	/* 5. move the next of prev_node as new_node */
+	prev_node->next = new_node;
 }
 
-struct test_struct* add_to_list(int val, bool add_to_end)
+/* Given a reference (pointer to pointer) to the head of a list and 
+an int, inserts a new node on the front of the list. */
+void push(struct Node **head_ref, int new_data)
 {
-    if(NULL == head)
-    {
-        return (create_list(val));
-    }
+	/* 1. allocate node */
+	struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
 
-    if(add_to_end)
-        printf("\n Adding node to end of list with value [%d]\n",val);
-    else
-        printf("\n Adding node to beginning of list with value [%d]\n",val);
+	/* 2. put in the data */
+	new_node->data = new_data;
 
-    struct test_struct *ptr = (struct test_struct*)malloc(sizeof(struct test_struct));
-    if(NULL == ptr)
-    {
-        printf("\n Node creation failed \n");
-        return NULL;
-    }
-    ptr->val = val;
-    ptr->next = NULL;
+	/* 3. Make next of new node as head */
+	new_node->next = (*head_ref);
 
-    if(add_to_end)
-    {
-        curr->next = ptr;
-        curr = ptr;
-    }
-    else
-    {
-        ptr->next = head;
-        head = ptr;
-    }
-    return ptr;
+	/* 4. move the head to point to the new node */
+	(*head_ref) = new_node;
 }
 
-struct test_struct* search_in_list(int val, struct test_struct **prev)
+/* Given a reference (pointer to pointer) to the head 
+of a list and an int, appends a new node at the end */
+void append(struct Node **head_ref, int new_data)
 {
-    struct test_struct *ptr = head;
-    struct test_struct *tmp = NULL;
-    bool found = false;
+	/* 1. allocate node */
+	struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
 
-    printf("\n Searching the list for value [%d] \n",val);
+	struct Node *last = *head_ref; /* used in step 5*/
 
-    while(ptr != NULL)
-    {
-        if(ptr->val == val)
-        {
-            found = true;
-            break;
-        }
-        else
-        {
-            tmp = ptr;
-            ptr = ptr->next;
-        }
-    }
+	/* 2. put in the data */
+	new_node->data = new_data;
 
-    if(true == found)
-    {
-        if(prev)
-            *prev = tmp;
-        return ptr;
-    }
-    else
-    {
-        return NULL;
-    }
+	/* 3. This new node is going to be the last node, so make next of 
+		it as NULL*/
+	new_node->next = NULL;
+
+	/* 4. If the Linked List is empty, then make the new node as head */
+	if (*head_ref == NULL)
+	{
+		*head_ref = new_node;
+		return;
+	}
+
+	/* 5. Else traverse till the last node */
+	while (last->next != NULL)
+		last = last->next;
+
+	/* 6. Change the next of last node */
+	last->next = new_node;
+	return;
 }
 
-int delete_from_list(int val)
+// This function prints contents of linked list starting from head
+void printList(struct Node *node)
 {
-    struct test_struct *prev = NULL;
-    struct test_struct *del = NULL;
-
-    printf("\n Deleting value [%d] from list\n",val);
-
-    del = search_in_list(val,&prev);
-    if(del == NULL)
-    {
-        return -1;
-    }
-    else
-    {
-        if(prev != NULL)
-            prev->next = del->next;
-
-        if(del == curr)
-        {
-            curr = prev;
-        }
-        else if(del == head)
-        {
-            head = del->next;
-        }
-    }
-
-    free(del);
-    del = NULL;
-
-    return 0;
+	while (node != NULL)
+	{
+		printf(" %d ", node->data);
+		node = node->next;
+	}
 }
 
-void print_list(void)
+/* Driver program to test above functions*/
+int main()
 {
-    struct test_struct *ptr = head;
+	/* Start with the empty list */
+	struct Node *head = NULL;
 
-    printf("\n -------Printing list Start------- \n");
-    while(ptr != NULL)
-    {
-        printf("\n [%d] \n",ptr->val);
-        ptr = ptr->next;
-    }
-    printf("\n -------Printing list End------- \n");
+	// Insert 6. So linked list becomes 6->NULL
+	append(&head, 6);
 
-    return;
-}
+	// Insert 7 at the beginning. So linked list becomes 7->6->NULL
+	push(&head, 7);
 
-int main(void)
-{
-    int i = 0, ret = 0;
-    struct test_struct *ptr = NULL;
+	// Insert 1 at the beginning. So linked list becomes 1->7->6->NULL
+	push(&head, 1);
 
-    print_list();
+	// Insert 4 at the end. So linked list becomes 1->7->6->4->NULL
+	append(&head, 4);
 
-    for(i = 5; i<10; i++)
-        add_to_list(i,true);
+	// Insert 8, after 7. So linked list becomes 1->7->8->6->4->NULL
+	insertAfter(head->next, 8);
 
-    print_list();
+	printf("\n Created Linked list is: ");
+	printList(head);
 
-    for(i = 4; i>0; i--)
-        add_to_list(i,false);
-
-    print_list();
-
-    for(i = 1; i<10; i += 4)
-    {
-        ptr = search_in_list(i, NULL);
-        if(NULL == ptr)
-        {
-            printf("\n Search [val = %d] failed, no such element found\n",i);
-        }
-        else
-        {
-            printf("\n Search passed [val = %d]\n",ptr->val);
-        }
-
-        print_list();
-
-        ret = delete_from_list(i);
-        if(ret != 0)
-        {
-            printf("\n delete [val = %d] failed, no such element found\n",i);
-        }
-        else
-        {
-            printf("\n delete [val = %d]  passed \n",i);
-        }
-
-        print_list();
-    }
-
-    return 0;
+	return 0;
 }
