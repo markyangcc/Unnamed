@@ -7,25 +7,39 @@ struct Node
 	struct Node *next;
 };
 
-struct Node *head = NULL;
-int count = 0;
-void insert_at_begin(int new_data);
-void insert_at_end(int new_data);
-void delete_list_from_begin(void);
-void print_list(struct Node *temp, int n); //Don't directly move global structure's pointer
-int find_node_with_content(struct Node *List, int num);
-int find_node_with_position(struct Node *List, int index);
-void insert_node(struct Node *List, int num, int position_index);
-void delete_node(struct Node *List, int position_index);
+struct Node *head = NULL; //全局变量
+int count = 0;			  //记录链表结点数，用于循环结束条件的判断
+
+void add_node_at_front(int new_data); //头插法
+void add_node_at_end(int new_data);	  //尾插法
+
+void insert_node(struct Node *List, int num, int position_index); //插入节点
+void delete_node(struct Node *List, int position_index);		  //删除节点
+
+int find_node_with_content(struct Node *List, int num);	   //按内容查找
+int find_node_with_position(struct Node *List, int index); //按位置查找
+
+void delete_list_from_front(void);		   //链表删除(从head开始删除)
+void print_list(struct Node *temp, int n); //打印链表
 
 int main(void)
 {
+	int ch;
+	printf("1. Insert an element at the beginning of linked list.\n");
+	printf("2. Insert an element at the end of linked list.\n");
+	printf("3. Traverse linked list.\n");
+	printf("4. Delete an element from beginning.\n");
+	printf("5. Delete an element from end.\n");
+	printf("6. Exit\n");
+
+	scanf("%d", &ch);
+
 	for (int i = 0; i < 3; i++)
 	{
 		int number;
 		printf("Enter a number:");
 		scanf("%d", &number);
-		insert_at_begin(number);
+		add_node_at_front(number);
 	}
 	insert_node(head, 0, 2);
 	print_list(head, count);
@@ -33,20 +47,16 @@ int main(void)
 	delete_node(head, 3);
 	print_list(head, count);
 
-	/* insert_at_begin(3);
-	insert_at_begin(4);
-	insert_at_begin(6);
-	insert_at_end(7);
- */
-	int postion = find_node_with_content(head, 2);
+	int postion = find_node_with_content(head, 1);
 	printf("It's position %d\n", postion);
 
-	int data = find_node_with_position(head, 3);
+	int data = find_node_with_position(head, 5);
 	printf("The data at that position: %d\n", data);
 
 	print_list(head, count);
 	delete_list_from_begin();
 	print_list(head, count);
+	
 	return 0;
 }
 
@@ -85,7 +95,7 @@ int find_node_with_content(struct Node *List, int num)
 
 	while (List->data != num)
 	{
-		if (List->next == NULL)//有必要的验证
+		if (List->next == NULL) //有必要的验证
 		{
 			printf("Can find %d in List\n", num);
 			exit(EXIT_SUCCESS);
@@ -102,7 +112,11 @@ int find_node_with_position(struct Node *List, int index)
 {
 	int counter = 1;
 	int data;
-
+	if (index <= 0 || index > count) //有必要的验证
+	{
+		printf("Can find position %d in List\n", index);
+		exit(EXIT_SUCCESS);
+	}
 	while (counter != index)
 	{
 		List = List->next;
@@ -113,7 +127,7 @@ int find_node_with_position(struct Node *List, int index)
 	return data;
 }
 
-void insert_at_begin(int new_data)
+void add_node_at_front(int new_data)
 {
 
 	struct Node *new_node = malloc(sizeof(struct Node));
@@ -132,7 +146,7 @@ void insert_at_begin(int new_data)
 	count++;
 }
 
-void insert_at_end(int new_data)
+void add_node_at_end(int new_data)
 {
 	struct Node *temp;
 	struct Node *new_node = malloc(sizeof(struct Node));
