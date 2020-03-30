@@ -8,20 +8,19 @@ struct Node
 	struct Node *next;
 };
 
-struct Node *head = NULL; //全局变量
-int count = 0;			  //记录链表结点数，用于循环结束条件的判断
+struct Node *head = NULL;			  //Global variable
+int count = 0;						  //To count nodes number, used to determine the loop termination condition
+void add_node_at_front(int new_data); //add note at front of linked list
+void add_node_at_end(int new_data);	  //add note at end of linked list
 
-void add_node_at_front(int new_data); //头插法
-void add_node_at_end(int new_data);	  //尾插法
+void insert_node(struct Node *List, int num, int position_index); //insert node of linked list
+int delete_node(struct Node *List, int position_index);			  //delete node of linked list
 
-void insert_node(struct Node *List, int num, int position_index); //插入节点
-void delete_node(struct Node *List, int position_index);		  //删除节点
+int search_node_with_content(struct Node *List, int num);	 //search node by content of liked list
+int search_node_with_position(struct Node *List, int index); //search node by position of liked list
 
-int search_node_with_content(struct Node *List, int num);	 //按内容查找
-int search_node_with_position(struct Node *List, int index); //按位置查找
-
-void delete_list_from_front(void);		   //链表删除(从head开始删除)
-void print_list(struct Node *temp, int n); //打印链表
+void delete_list_from_front(void);		   //Delete liked list (begin from front)
+void print_list(struct Node *temp, int n); //Print liked list
 
 int main(void)
 {
@@ -41,20 +40,23 @@ int main(void)
 
 		switch (ch)
 		{
-		case 1:;
+		case 1:
+		{
 			int list_len;
 			printf("How long you want to create a linked list of nodes, enter the number of nodes:");
-			scanf("%d", &list_len);
+			scanf("%d", &list_len); //Ignore input validation here
 			for (int i = 0; i < list_len; i++)
 			{
 				int number;
 				printf("Enter the %d number:", i + 1);
-				scanf("%d", &number);
+				scanf("%d", &number); //Ignore input validation here
 				add_node_at_front(number);
 			}
-			break;
-		case 2:;
-			//	int list_len;
+		}
+		break;
+		case 2:
+		{
+			int list_len;
 			printf("How long you want to create a linked list of nodes, enter the number of nodes:");
 			scanf("%d", &list_len); //Ignore input validation here
 			for (int i = 0; i < list_len; i++)
@@ -64,40 +66,50 @@ int main(void)
 				scanf("%d", &number); //Ignore input validation here
 				add_node_at_end(number);
 			}
-			break;
+		}
+		break;
 		case 3:;
-			int number, position_index;
-			printf("Enter the number and position's index(separate two intergers with a blankspace):");
-			if (scanf("%d %d", &number, &position_index) != 2) //Input validation. Guaranteed to read two integers,
-			{												   //cause struct->data was previously defined to store an int variable
-				printf("Error, invalid input.");
-				exit(EXIT_FAILURE);
+			{
+				int number, position_index;
+				printf("Enter the number and position's index(separate two intergers with a blankspace):");
+				if (scanf("%d %d", &number, &position_index) != 2) //Input validation. Guaranteed to read two integers,
+				{												   //cause struct->data was previously defined to store an int variable
+					printf("Error, invalid input.");
+					exit(EXIT_FAILURE);
+				}
+				insert_node(head, number, position_index);
+				printf("%d was inserted into the position %d liked list successfully.", number, position_index);
 			}
-			insert_node(head, number, position_index);
-			printf("%d was inserted into the position %d liked list successfully.", number, position_index);
 			break;
 		case 4:;
-			int node_position;
-			printf("Enter the position of node in the liked list:");
-			scanf("%d", &node_position); //Ignore input validation here
-			delete_node(head, node_position);
-			printf("%d was deleted from the position %d liked list successfully.", number, position_index);
+			{
+				int node_position;
+				int number;
+				printf("Enter the position of node in the liked list:");
+				scanf("%d", &node_position); //Ignore input validation here
+				number = delete_node(head, node_position);
+				printf("%d was deleted from the position %d liked list successfully.", number, node_position);
+			}
 			break;
 		case 5:;
-			//int number;
-			int postion; //Store return value (which is the position of the number in the liked list)
-			printf("Enter the number you are searching in the liked list:");
-			scanf("%d", &number);
-			postion = search_node_with_content(head, number);
-			printf("The node %d position:%d\n", number, postion);
+			{
+				int number;
+				int postion; //Store return value (which is the position of the number in the liked list)
+				printf("Enter the number you are searching in the liked list:");
+				scanf("%d", &number); //Ignore input validation here
+				postion = search_node_with_content(head, number);
+				printf("The node %d position:%d\n", number, postion);
+			}
 			break;
 		case 6:;
-			//	int position;
-			//	int number; //Store return value (which is the number stored in the position of the liked list)
-			printf("Enter the position you are searching in the liked list:");
-			scanf("%d", &postion);
-			number = search_node_with_content(head, postion);
-			printf("The position %d stored number:%d \n", postion, number);
+			{
+				int position;
+				int number; //Store return value (which is the number stored in the position of the liked list)
+				printf("Enter the position you are searching in the liked list:");
+				scanf("%d", &position); //Ignore input validation here
+				number = search_node_with_content(head, position);
+				printf("The position %d stored number:%d \n", position, number);
+			}
 			break;
 		case 7:
 			delete_list_from_front();
@@ -112,14 +124,15 @@ int main(void)
 			exit(EXIT_SUCCESS);
 			break;
 		}
-	} 
+	}
 
 	return 0;
 }
 
-void delete_node(struct Node *List, int position_index)
+int delete_node(struct Node *List, int position_index)
 {
 	int counter = 1;
+	int data;
 	struct Node *temp;
 	while (counter != position_index - 1)
 	{
@@ -127,38 +140,39 @@ void delete_node(struct Node *List, int position_index)
 		counter++;
 	}
 	temp = List->next;
+	data = temp->data;
 	List->next = temp->next;
 	count--;
 	free(temp);
+	return data;
 }
 void insert_node(struct Node *List, int num, int position_index)
 {
 	int counter = 1;
 	struct Node *new_node = malloc(sizeof(struct Node));
-	while (counter != position_index - 1) //移动到节点的前一个位置
+	while (counter != position_index - 1) //Move to the node, before the insert place
 	{
 		List = List->next;
 	}
 
-	new_node->data = num;		 //赋值
-	new_node->next = List->next; //与后面链表建立连接
-	List->next = new_node;		 //与前面链表建立连接
+	new_node->data = num;		 //Assignment
+	new_node->next = List->next; //Establish a connection with the following linked list
+	List->next = new_node;		 //Establish a connection with the previous linked list
 	count++;
 }
 
 int search_node_with_content(struct Node *List, int num)
 {
-	int index = 1; //此处翻译成下标，record node's position(begin from 1)
+	int index = 1; //To record node's position(begin from 1)
 
 	while (List->data != num)
 	{
-		if (List->next == NULL) //有必要的验证
+		if (List->next == NULL) //Necessary verification
 		{
-			printf("Can find %d in List\n", num);
+			printf("Can find %d in List.\n", num);
 			exit(EXIT_SUCCESS);
 		}
-		List = List->next; //没有找到就继续寻找
-
+		List = List->next; //If not found, keep looking
 		index++;
 	}
 
@@ -169,9 +183,9 @@ int search_node_with_position(struct Node *List, int index)
 {
 	int counter = 1;
 	int data;
-	if (index <= 0 || index > count) //有必要的验证
+	if (index <= 0 || index > count) //Necessary verification
 	{
-		printf("Can find position %d in List\n", index);
+		printf("Can find position %d in List.\n", index);
 		exit(EXIT_SUCCESS);
 	}
 	while (counter != index)
@@ -244,7 +258,7 @@ void delete_list_from_front(void)
 		free(head);
 		head = temp;
 		count--;
-
+		printf("\n--------------------------------------------\n");
 		printf("%d deleted from the beginning successfully.\n", number);
 	}
 }
