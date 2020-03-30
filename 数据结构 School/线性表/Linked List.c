@@ -112,7 +112,7 @@ int main(void)
 			exit(EXIT_SUCCESS);
 			break;
 		}
-	}
+	} 
 
 	return 0;
 }
