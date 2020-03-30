@@ -114,30 +114,6 @@ int main(void)
 		}
 	}
 
-	/*
-	for (int i = 0; i < 3; i++)
-	{
-		int number;
-		printf("Enter a number:");
-		scanf("%d", &number);
-		add_node_at_front(number);
-	}
-	insert_node(head, 0, 2);
-	print_list(head, count);
-
-	delete_node(head, 3);
-	print_list(head, count);
-
-	int postion = search_node_with_content(head, 1);
-	printf("It's position %d\n", postion);
-
-	int data = search_node_with_position(head, 5);
-	printf("The data at that position: %d\n", data);
-
-	print_list(head, count);
-	delete_list_from_front();
-	print_list(head, count);
-*/
 	return 0;
 }
 
