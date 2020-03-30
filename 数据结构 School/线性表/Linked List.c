@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 struct Node
 {
@@ -16,8 +17,8 @@ void add_node_at_end(int new_data);	  //尾插法
 void insert_node(struct Node *List, int num, int position_index); //插入节点
 void delete_node(struct Node *List, int position_index);		  //删除节点
 
-int find_node_with_content(struct Node *List, int num);	   //按内容查找
-int find_node_with_position(struct Node *List, int index); //按位置查找
+int search_node_with_content(struct Node *List, int num);	 //按内容查找
+int search_node_with_position(struct Node *List, int index); //按位置查找
 
 void delete_list_from_front(void);		   //链表删除(从head开始删除)
 void print_list(struct Node *temp, int n); //打印链表
@@ -25,15 +26,95 @@ void print_list(struct Node *temp, int n); //打印链表
 int main(void)
 {
 	int ch;
-	printf("1. Insert an element at the beginning of linked list.\n");
-	printf("2. Insert an element at the end of linked list.\n");
-	printf("3. Traverse linked list.\n");
-	printf("4. Delete an element from beginning.\n");
-	printf("5. Delete an element from end.\n");
-	printf("6. Exit\n");
+	while (true)
+	{
+		printf("1. Add nodes at the front of list.\n");
+		printf("2. Add nodes at the end of list.\n");
+		printf("3. Insert a node into the linked list.\n");
+		printf("4. Delete a node from the linked list.\n");
+		printf("5. Search an node in the linked list by node's conent.\n");
+		printf("6. Search an node in the linked list by node's position.\n");
+		printf("7. Delete the linked list.\n");
+		printf("8. Traverse linked list.\n");
+		printf("9. Exit.\n");
+		scanf("%d", &ch);
 
-	scanf("%d", &ch);
+		switch (ch)
+		{
+		case 1:;
+			int list_len;
+			printf("How long you want to create a linked list of nodes, enter the number of nodes:");
+			scanf("%d", &list_len);
+			for (int i = 0; i < list_len; i++)
+			{
+				int number;
+				printf("Enter the %d number:", i + 1);
+				scanf("%d", &number);
+				add_node_at_front(number);
+			}
+			break;
+		case 2:;
+			//	int list_len;
+			printf("How long you want to create a linked list of nodes, enter the number of nodes:");
+			scanf("%d", &list_len); //Ignore input validation here
+			for (int i = 0; i < list_len; i++)
+			{
+				int number;
+				printf("Enter the %d number:", i + 1);
+				scanf("%d", &number); //Ignore input validation here
+				add_node_at_end(number);
+			}
+			break;
+		case 3:;
+			int number, position_index;
+			printf("Enter the number and position's index(separate two intergers with a blankspace):");
+			if (scanf("%d %d", &number, &position_index) != 2) //Input validation. Guaranteed to read two integers,
+			{												   //cause struct->data was previously defined to store an int variable
+				printf("Error, invalid input.");
+				exit(EXIT_FAILURE);
+			}
+			insert_node(head, number, position_index);
+			printf("%d was inserted into the position %d liked list successfully.", number, position_index);
+			break;
+		case 4:;
+			int node_position;
+			printf("Enter the position of node in the liked list:");
+			scanf("%d", &node_position); //Ignore input validation here
+			delete_node(head, node_position);
+			printf("%d was deleted from the position %d liked list successfully.", number, position_index);
+			break;
+		case 5:;
+			//int number;
+			int postion; //Store return value (which is the position of the number in the liked list)
+			printf("Enter the number you are searching in the liked list:");
+			scanf("%d", &number);
+			postion = search_node_with_content(head, number);
+			printf("The node %d position:%d\n", number, postion);
+			break;
+		case 6:;
+			//	int position;
+			//	int number; //Store return value (which is the number stored in the position of the liked list)
+			printf("Enter the position you are searching in the liked list:");
+			scanf("%d", &postion);
+			number = search_node_with_content(head, postion);
+			printf("The position %d stored number:%d \n", postion, number);
+			break;
+		case 7:
+			delete_list_from_front();
+			break;
+		case 8:
+			print_list(head, count);
+			break;
+		case 9:
+			exit(EXIT_SUCCESS);
+			break;
+		default:
+			exit(EXIT_SUCCESS);
+			break;
+		}
+	}
 
+	/*
 	for (int i = 0; i < 3; i++)
 	{
 		int number;
@@ -47,16 +128,16 @@ int main(void)
 	delete_node(head, 3);
 	print_list(head, count);
 
-	int postion = find_node_with_content(head, 1);
+	int postion = search_node_with_content(head, 1);
 	printf("It's position %d\n", postion);
 
-	int data = find_node_with_position(head, 5);
+	int data = search_node_with_position(head, 5);
 	printf("The data at that position: %d\n", data);
 
 	print_list(head, count);
-	delete_list_from_begin();
+	delete_list_from_front();
 	print_list(head, count);
-	
+*/
 	return 0;
 }
 
@@ -89,7 +170,7 @@ void insert_node(struct Node *List, int num, int position_index)
 	count++;
 }
 
-int find_node_with_content(struct Node *List, int num)
+int search_node_with_content(struct Node *List, int num)
 {
 	int index = 1; //此处翻译成下标，record node's position(begin from 1)
 
@@ -108,7 +189,7 @@ int find_node_with_content(struct Node *List, int num)
 	return index;
 }
 
-int find_node_with_position(struct Node *List, int index)
+int search_node_with_position(struct Node *List, int index)
 {
 	int counter = 1;
 	int data;
@@ -170,7 +251,7 @@ void add_node_at_end(int new_data)
 	count++;
 }
 
-void delete_list_from_begin(void)
+void delete_list_from_front(void)
 {
 	while (count != 0)
 	{
@@ -194,6 +275,11 @@ void delete_list_from_begin(void)
 
 void print_list(struct Node *temp, int n)
 {
+	if (temp == NULL)
+	{
+		printf("The linked list is empty.");
+	}
+
 	for (int i = 0; i < n; i++)
 	{
 		printf("%d ", temp->data);
