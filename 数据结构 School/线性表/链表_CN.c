@@ -107,7 +107,7 @@ int main(void)
 				int number; //存储返回值（返回值是存储在链表位置上的int型数字）
 				printf("输入你要在链表中搜索的位置索引:");
 				scanf("%d", &position); //此处省略了输入验证
-				number = search_node_with_content(head, position);
+				number = search_node_with_position(head, position);
 				printf("链表 %d 的位置上存储着数字:%d \n", position, number);
 			}
 			break;

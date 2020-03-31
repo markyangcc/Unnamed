@@ -107,7 +107,7 @@ int main(void)
 				int number; //Store return value (which is the number stored in the position of the liked list)
 				printf("Enter the position you are searching in the liked list:");
 				scanf("%d", &position); //Ignore input validation here
-				number = search_node_with_content(head, position);
+				number = search_node_with_position(head, position);
 				printf("The position %d stored number:%d \n", position, number);
 			}
 			break;
@@ -115,7 +115,7 @@ int main(void)
 			delete_list_from_front();
 			break;
 		case 8:
-			print_list(head, count);
+			print_list(head, count); 
 			break;
 		case 9:
 			exit(EXIT_SUCCESS);
