@@ -8,34 +8,34 @@ struct Node
 	struct Node *next;
 };
 
-struct Node *head = NULL;			  //Global variable
-int count = 0;						  //To count nodes number, used to determine the loop termination condition
-void add_node_at_front(int new_data); //add note at front of linked list
-void add_node_at_end(int new_data);	  //add note at end of linked list
+struct Node *head = NULL;			  //全局指针变量
+int count = 0;						  //统计节点数，用于判断循环终止条件
+void add_node_at_front(int new_data); //头插法
+void add_node_at_end(int new_data);	  //尾插法
 
-void insert_node(struct Node *List, int num, int position_index); //insert node of linked list
-int delete_node(struct Node *List, int position_index);			  //delete node of linked list
+void insert_node(struct Node *List, int num, int position_index); //插入链表节点
+int delete_node(struct Node *List, int position_index);			  //删除链表节点
 
-int search_node_with_content(struct Node *List, int num);	 //search node by content of liked list
-int search_node_with_position(struct Node *List, int index); //search node by position of liked list
+int search_node_with_content(struct Node *List, int num);	 //链表查找：通过内容查找
+int search_node_with_position(struct Node *List, int index); //链表查找：通过位置查找
 
-void delete_list_from_front(void);		   //Delete liked list (begin from front)
-void print_list(struct Node *temp, int n); //Print liked list
+void delete_list_from_front(void);		   //删除链表(从head开始删除)
+void print_list(struct Node *temp, int n); //遍历链表(打印链表)
 
 int main(void)
 {
 	int ch;
 	while (true)
 	{
-		printf("1. Add nodes at the front of list.\n");
-		printf("2. Add nodes at the end of list.\n");
-		printf("3. Insert a node into the linked list.\n");
-		printf("4. Delete a node from the linked list.\n");
-		printf("5. Search an node in the linked list by node's conent.\n");
-		printf("6. Search an node in the linked list by node's position.\n");
-		printf("7. Delete the linked list.\n");
-		printf("8. Traverse linked list.\n");
-		printf("9. Exit.\n");
+		printf("1. 链表的建立：头插法.\n");
+		printf("2. 链表的建立：尾插法.\n");
+		printf("3. 链表节点的插入.\n");
+		printf("4. 链表节点的删除.\n");
+		printf("5. 链表的查找：按内容查找.\n");
+		printf("6. 链表的查找：按位置查找.\n");
+		printf("7. 删除链表.\n");
+		printf("8. 打印链表.\n");
+		printf("9. 退出.\n");
 		scanf("%d", &ch);
 
 		switch (ch)
@@ -43,13 +43,13 @@ int main(void)
 		case 1:
 		{
 			int list_len;
-			printf("How long you want to create a linked list of nodes, enter the number of nodes:");
-			scanf("%d", &list_len); //Ignore input validation here
+			printf("需要创建包含多少节点的链表，请输入节点数:");
+			scanf("%d", &list_len); //此处省略了输入验证
 			for (int i = 0; i < list_len; i++)
 			{
 				int number;
-				printf("Enter the %d number:", i + 1);
-				scanf("%d", &number); //Ignore input validation here
+				printf("输入第 %d 个节点内容:", i + 1);
+				scanf("%d", &number); //此处省略了输入验证
 				add_node_at_front(number);
 			}
 		}
@@ -57,13 +57,13 @@ int main(void)
 		case 2:
 		{
 			int list_len;
-			printf("How long you want to create a linked list of nodes, enter the number of nodes:");
-			scanf("%d", &list_len); //Ignore input validation here
+			printf("需要创建包含多少节点的链表，请输入节点数:");
+			scanf("%d", &list_len); //此处省略了输入验证
 			for (int i = 0; i < list_len; i++)
 			{
 				int number;
-				printf("Enter the %d number:", i + 1);
-				scanf("%d", &number); //Ignore input validation here
+				printf("输入第 %d 个节点内容:", i + 1);
+				scanf("%d", &number); //此处省略了输入验证
 				add_node_at_end(number);
 			}
 		}
@@ -71,44 +71,44 @@ int main(void)
 		case 3:;
 			{
 				int number, position_index;
-				printf("Enter the number and position's index(separate two intergers with a blankspace):");
-				if (scanf("%d %d", &number, &position_index) != 2) //Input validation. Guaranteed to read two integers,
-				{												   //cause struct->data was previously defined to store an int variable
-					printf("Error, invalid input.");
+				printf("输入数字和位置索引（两个整数的输入，用空格隔开）:");
+				if (scanf("%d %d", &number, &position_index) != 2) //输入验证，保证读取的是两个整数
+				{												   //因为struct Node定义了 Node->data,存储的是int型数字
+					printf("Error, 非法输入.");
 					exit(EXIT_FAILURE);
 				}
 				insert_node(head, number, position_index);
-				printf("%d was inserted into the position %d liked list successfully.", number, position_index);
+				printf("%d 已成功插入 %d 号链表位置.", number, position_index);
 			}
 			break;
 		case 4:;
 			{
 				int node_position;
 				int number;
-				printf("Enter the position of node in the liked list:");
-				scanf("%d", &node_position); //Ignore input validation here
+				printf("输入要删除的节点的位置：");
+				scanf("%d", &node_position); //此处省略了输入验证
 				number = delete_node(head, node_position);
-				printf("%d was deleted from the position %d liked list successfully.", number, node_position);
+				printf("%d 已成功从 %d 号链表位置删除.", number, node_position);
 			}
 			break;
 		case 5:;
 			{
 				int number;
-				int postion; //Store return value (which is the position of the number in the liked list)
-				printf("Enter the number you are searching in the liked list:");
-				scanf("%d", &number); //Ignore input validation here
+				int postion; //存储返回值（返回值是该数字在链表中的位置）
+				printf("输入你要在链表中搜索的数字:");
+				scanf("%d", &number); //此处省略了输入验证
 				postion = search_node_with_content(head, number);
-				printf("The node %d position:%d\n", number, postion);
+				printf("节点 %d 在链表中的位置是:%d\n", number, postion);
 			}
 			break;
 		case 6:;
 			{
 				int position;
-				int number; //Store return value (which is the number stored in the position of the liked list)
-				printf("Enter the position you are searching in the liked list:");
-				scanf("%d", &position); //Ignore input validation here
+				int number; //存储返回值（返回值是存储在链表位置上的int型数字）
+				printf("输入你要在链表中搜索的位置索引:");
+				scanf("%d", &position); //此处省略了输入验证
 				number = search_node_with_content(head, position);
-				printf("The position %d stored number:%d \n", position, number);
+				printf("链表 %d 的位置上存储着数字:%d \n", position, number);
 			}
 			break;
 		case 7:
@@ -150,29 +150,29 @@ void insert_node(struct Node *List, int num, int position_index)
 {
 	int counter = 1;
 	struct Node *new_node = malloc(sizeof(struct Node));
-	while (counter != position_index - 1) //Move to the node, before the insert place
+	while (counter != position_index - 1) //移动指针到插入位置的前一个节点
 	{
 		List = List->next;
 	}
 
-	new_node->data = num;		 //Assignment
-	new_node->next = List->next; //Establish a connection with the following linked list
-	List->next = new_node;		 //Establish a connection with the previous linked list
+	new_node->data = num;		 //赋值
+	new_node->next = List->next; //与后面链表建立连接
+	List->next = new_node;		 //与前面链表建立连接
 	count++;
 }
 
 int search_node_with_content(struct Node *List, int num)
 {
-	int index = 1; //To record node's position(begin from 1)
+	int index = 1; //记录节点的位置，从1开始计数，符合生活习惯
 
 	while (List->data != num)
 	{
-		if (List->next == NULL) //Necessary verification
+		if (List->next == NULL) ///必要的验证
 		{
 			printf("Can find %d in List.\n", num);
 			exit(EXIT_SUCCESS);
 		}
-		List = List->next; //If not found, keep looking
+		List = List->next; //找不到就继续找
 		index++;
 	}
 
@@ -183,9 +183,9 @@ int search_node_with_position(struct Node *List, int index)
 {
 	int counter = 1;
 	int data;
-	if (index <= 0 || index > count) //Necessary verification
+	if (index <= 0 || index > count) //必要的验证
 	{
-		printf("Can find position %d in List.\n", index);
+		printf("在链表上找不到 %d 号位置.\n", index);
 		exit(EXIT_SUCCESS);
 	}
 	while (counter != index)
@@ -259,7 +259,7 @@ void delete_list_from_front(void)
 		head = temp;
 		count--;
 		printf("\n--------------------------------------------\n");
-		printf("%d deleted from the beginning successfully.\n", number);
+		printf("%d 成功删除.\n", number);
 	}
 }
 
@@ -267,7 +267,7 @@ void print_list(struct Node *temp, int n)
 {
 	if (temp == NULL)
 	{
-		printf("The linked list is empty.");
+		printf("链表为空.");
 	}
 
 	for (int i = 0; i < n; i++)
