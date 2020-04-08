@@ -127,7 +127,7 @@ void insert_sq(SqList *L, int i, ElemType e)
 //删除第i个元素，返回其值
 ElemType delete_sq(SqList *L, int i)
 {
-    ElemType x;
+    ElemType x = NULL;
     int j;
     if (L->length == 0)
         printf("空表!\n");
