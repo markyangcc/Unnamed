@@ -11,7 +11,7 @@ typedef struct node
 
 void CreatList(LinkList, int);                //生成一个单链表
 bool ListInsert(LinkList, int, char);         //在单链表中插入一个元素
-bool ListDelete(LinkList, int, char);         //在单链表中删除一个元素
+bool ListDelete(LinkList, int, char *);       //在单链表中删除一个元素
 bool ListFind_keyword(LinkList, char, int *); //按关键字查找一个元素
 bool ListFind_order(LinkList, char *, int);   //按序号查找一个元素
 void ListPrint(LinkList);                     //显示单链表所有元素
@@ -79,7 +79,7 @@ int main(void)
             while (getchar() != '\n')
                 continue;
 
-            temp = ListDelete(L, loc, ch); //删除
+            temp = ListDelete(L, loc, &ch); //删除
             if (temp == false)
                 printf("删除失败!\n"); //删除失败
             else
@@ -179,7 +179,7 @@ bool ListInsert(LinkList v, int i, char e)
     return true;
 }
 
-bool ListDelete(LinkList v, int i, char e)
+bool ListDelete(LinkList v, int i, char *e)
 { //在单链表中删除第i个元素，成功删除返回True，并用e返回该元素值，失败返回False
     LinkList p, q;
     int j = 0;
@@ -193,7 +193,7 @@ bool ListDelete(LinkList v, int i, char e)
         return false; //查找失败
     q = p->next;
     p->next = q->next; /*将未完成的代码补全,此处添加一条代码,提示：删除该元素*/
-    e = q->data;       /*将未完成的代码补全,此处添加一条代码,提示:e取得该元素值，即修改指针，删除结点q*/
+    *e = q->data;      /*将未完成的代码补全,此处添加一条代码,提示:e取得该元素值，即修改指针，删除结点q*/
     free(q);           //释放该元素空间
     return true;
 }
