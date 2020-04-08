@@ -11,10 +11,10 @@ typedef struct
 SqList a; //函数声明
 
 void creat_list(SqList *L);
-void out_list(SqList L);
+void out_list(SqList *L);
 void insert_sq(SqList *L, int i, ElemType e);
 ElemType delete_sq(SqList *L, int i);
-int locat_sq(SqList L, ElemType e);
+int locat_sq(SqList *L, ElemType e);
 
 //主函数
 int main(void)
@@ -38,7 +38,7 @@ int main(void)
         case 1:
         {
             creat_list(&a);
-            out_list(a);
+            out_list(&a);
         }
         break;
         case 2:
@@ -48,7 +48,7 @@ int main(void)
             printf("请输入要插入的元素值： ");
             scanf("%d", &e);
             insert_sq(&a, i, e);
-            out_list(a);
+            out_list(&a);
         }
         break;
         case 3:
@@ -61,15 +61,15 @@ int main(void)
                 printf("\n删除的元素为：%d\n", x);
             else
                 printf("要删除的元素不存在！");
-            out_list(a);
+            out_list(&a);
         }
         break;
         case 4:
         {
             printf("\n请输入要查找的元素值：");
             scanf("%d", &e);
-            loc = locat_sq(a, e);
-            out_list(a);
+            loc = locat_sq(&a, e);
+            out_list(&a);
             if (loc == -1)
                 printf("\n未找到指定元素！");
             else
@@ -97,11 +97,11 @@ void creat_list(SqList *L)
     }
 }
 //输出线性表
-void out_list(SqList L)
+void out_list(SqList *L)
 {
     int i;
-    for (i = 0; i <= L.length - 1; i++)
-        printf("%10d", L.a[i]);
+    for (i = 0; i <= L->length - 1; i++)
+        printf("%10d", L->a[i]);
 }
 
 //在线性表的第i个位置插入元素e
@@ -147,11 +147,11 @@ ElemType delete_sq(SqList *L, int i)
 }
 
 //查找值为e的元素，返回它的位置
-int locat_sq(SqList L, ElemType e)
+int locat_sq(SqList *L, ElemType e)
 {
     int i = 0;
-    while (L.a[i] != e)
+    while (L->a[i] != e)
         i++;
-    if (i <= L.length - 1)
-        return (i + 1);
+    if (i <= L->length - 1)
+        return i;
 }
