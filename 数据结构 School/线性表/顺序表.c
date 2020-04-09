@@ -1,3 +1,6 @@
+/* 本程序示例，无法在头部进行插入 ，
+修改老师的代码，不太想改，😂😂*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #define MAXSIZE 20
