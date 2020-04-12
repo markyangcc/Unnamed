@@ -29,7 +29,7 @@ int main(void)
     do
     {
         printf("\n\n\n");
-        printf("\n          1.建立线性表");
+        printf("\n          1.建立顺序表");
         printf("\n          2.插入元素");
         printf("\n          3.删除元素");
         printf("\n          4.查找元素");
@@ -88,11 +88,11 @@ int main(void)
     return 0;
 } /*main*/
 
-//建立线性表
+//建立顺序表
 void creat_list(SqList *L)
 {
     int i;
-    printf("请输入线性表的长度: ");
+    printf("请输入顺序表的长度: ");
     scanf("%d", &L->length);
     for (i = 0; i < L->length; i++)
     {
@@ -100,7 +100,7 @@ void creat_list(SqList *L)
         scanf("%d", &(L->a[i]));
     }
 }
-//输出线性表
+//输出顺序表
 void out_list(SqList *L)
 {
     int i;
@@ -108,16 +108,22 @@ void out_list(SqList *L)
         printf("%10d", L->a[i]);
 }
 
-//在线性表的第i个位置插入元素e
+//在顺序表的第i个位置插入元素e
 void insert_sq(SqList *L, int i, ElemType e)
 {
     int j;
     if (L->length == MAXSIZE)
-        printf("线性表已满!\n");
+    {
+        printf("顺序表已满!\n");
+        return 0;
+    }
     else
     {
         if (i < 1 || i > L->length + 1)
+        {
             printf("输入位置错!\n");
+            return 0;
+        }
         else
         {
             for (j = L->length - 1; j >= i - 1; j--)
@@ -134,7 +140,10 @@ ElemType delete_sq(SqList *L, int i)
     ElemType x;
     int j;
     if (L->length == 0)
+    {
         printf("空表!\n");
+        return 0;
+    }
     else if (i < 1 || i > L->length)
     {
         printf("输入位置错！\n");
