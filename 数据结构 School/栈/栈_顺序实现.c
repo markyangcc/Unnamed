@@ -85,7 +85,7 @@ void setEmpty(SqStack *p)
 {
     p->top = -1;
 }
-void main()
+int main(void)
 {
     SqStack *q;
     int cord;
@@ -107,41 +107,33 @@ void main()
         switch (cord)
         {
         case 1:
-        {
             q = (SqStack *)malloc(sizeof(SqStack));
             InitStack(q);
             DisplayStack(q);
-        }
-        break;
+            break;
         case 2:
-        {
             printf("请输入要插入的数据元素:a=");
             scanf("%d", &a);
             Push(q, a);
             DisplayStack(q);
-        }
-        break;
+            break;
         case 3:
-        {
             Pop(q);
             DisplayStack(q);
-        }
-        break;
+            break;
         case 4:
-        {
             GetTop(q);
             DisplayStack(q);
-        }
-        break;
+            break;
         case 5:
-        {
             setEmpty(q);
             printf("\n顺序栈被置空!\n");
             DisplayStack(q);
-        }
-        break;
+            break;
         case 6:
-            exit (0);
+            exit(0);
         }
     } while (cord <= 6);
+
+    return 0;
 }
