@@ -37,7 +37,7 @@ ElemType popLStack(LinkStack *s)
     ElemType x;
     StackNode *p;
     p = s->top;
-    if (s->top == 0)
+    if (s->top == NULL)
     {
         printf("\n栈空，不能出栈！\n");
         return 0;
