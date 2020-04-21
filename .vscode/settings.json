@@ -1,7 +1,15 @@
 {
+    "code-runner.runInTerminal": true,
+    "code-runner.saveFileBeforeRun": true,
+    "cSpell.language": "en,en-US",
+    "C_Cpp.errorSquiggles": "Disabled",
     "cSpell.ignoreWords": [
-        "abcdefg",
-        "d",
-        "locat"
-    ]
+        "dics",
+        "locat",
+        "sq"
+    ],
+    "code-runner.executorMap": {
+        "c": "cd $dir && gcc \"$fileName\" -o \"$fileNameWithoutExt\" && .\\\"$fileNameWithoutExt\""
+    },
+    "code-runner.preserveFocus": false, // 若为false，run code后光标会聚焦到终端上。
 }
