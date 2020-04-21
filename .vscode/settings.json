@@ -3,11 +3,6 @@
     "code-runner.saveFileBeforeRun": true,
     "cSpell.language": "en,en-US",
     "C_Cpp.errorSquiggles": "Disabled",
-    "cSpell.ignoreWords": [
-        "dics",
-        "locat",
-        "sq"
-    ],
     "code-runner.executorMap": {
         "c": "cd $dir && gcc \"$fileName\" -o \"$fileNameWithoutExt\" && .\\\"$fileNameWithoutExt\""
     },
