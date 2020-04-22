@@ -8,7 +8,7 @@ struct Node
     struct Node *next;
 };
 
-struct Node *top;
+struct Node *top=NULL;
 
 bool isEmpty(void);
 void push(int data);
