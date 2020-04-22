@@ -10,9 +10,9 @@ struct Node
 
 //struct Node *top = malloc(sizeof(struct Node *)); //top stack pointer
 //FIXME:struct can't declare in file scope
-bool isEmpty(struct Node *top);
+bool isEmpty(struct Node **top);
 void push(struct Node **top, int data);
-int pop(struct Node *top);
+int pop(struct Node **top);
 int peek(struct Node *top);
 
 int main(void)
@@ -20,6 +20,8 @@ int main(void)
 	int data;
 	int choice;
 	struct Node *top = malloc(sizeof(struct Node *)); //top stack pointer
+	top->next = NULL;
+	printf("\nStack initialized!\n");
 
 	printf("\n====================================================================\n");
 	printf("            Implementation of Stack Using Linked List in C\n");
@@ -37,15 +39,15 @@ int main(void)
 		switch (choice)
 		{
 		case 1:
-			top->next = NULL;
+
 			//TODO: free all allocated memory
-			/*  while (top != NULL)
-            {
-                struct Node *temp_ptr;
-                temp_ptr = top;
-                top = top--;
-                free(temp_ptr);
-            } */
+			while (top != NULL)
+			{
+				struct Node *temp_ptr;
+				temp_ptr = top;
+				top = top--;
+				free(temp_ptr);
+			}
 			printf("Stack initialized successfully.\n");
 			break;
 		case 2:
@@ -55,19 +57,19 @@ int main(void)
 			break;
 		case 3:
 		{
-			bool ret_value = isEmpty(top);
+			bool ret_value = isEmpty(&top);
 			if (ret_value == true)
 			{
 				printf("Empty Stack. Requirement denied.\n");
 				exit(EXIT_FAILURE);
 			}
-			data = pop(top);
+			data = pop(&top);
 			printf("popped:%d", data);
 			break;
 		}
 		case 4:
 		{
-			bool ret_value = isEmpty(top);
+			bool ret_value = isEmpty(&top);
 			if (ret_value)
 			{
 				printf("Empty Stack. Requirement denied.\n");
@@ -90,9 +92,9 @@ int main(void)
 	return 0;
 }
 
-bool isEmpty(struct Node *top)
+bool isEmpty(struct Node **top)
 {
-	return top->next == NULL;
+	return (*top)->next == NULL;
 }
 
 void push(struct Node **top, int data)
@@ -103,11 +105,11 @@ void push(struct Node **top, int data)
 	*top = new_node;
 }
 
-int pop(struct Node *top)
+int pop(struct Node **top)
 {
-	int data = top->data;
-	struct Node *temp_ptr = top;
-	top = top->next;
+	int data = (*top)->data;	  // Caution:Operators priority, don't forget the brackets,
+	struct Node *temp_ptr = *top; // error: '*top' is a pointer; did you mean to use '->'?
+	*top = (*top)->next;
 	free(temp_ptr);
 	return data;
 }
