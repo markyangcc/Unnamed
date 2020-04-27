@@ -1,8 +1,9 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
 #define MAX 100
-#define NULL 0
-#include "stdio.h"
-#include "string.h"
-#include "stdlib.h"
+
 typedef struct tick
 {
     char name[10];
@@ -10,12 +11,20 @@ typedef struct tick
     char dist[10];
     char time[10];
     char flay[10];
-    int rear, front;
-} tickd;
-tickd q[MAX + 1];
+    //  int rear, front;
+} tickdef;
+
+tickdef q[MAX + 1];
+
 int rear, front;
-void enqueue(), dequeue(), clear(), good_bye();
+int count;
+
+void enqueue();
+void dequeue();
+void clear();
+void good_bye();
 int menu_select();
+
 void clear()
 {
 }
@@ -29,6 +38,7 @@ int menu_select()
     char c;
     int n;
     clear();
+
     printf("机票预售系统程序主控模块:\n\n\n");
     printf("\t\t 1.  买票登记 \n");
     printf("\t\t 2.  删除登记 \n");
@@ -40,7 +50,7 @@ int menu_select()
         n = c - 48;
     } while ((n < 0) || (n > 2));
     return (n);
-} /*MENU_SELECT*/
+}
 
 void enqueue() //入队操作
 {
@@ -54,7 +64,8 @@ void enqueue() //入队操作
         exit(0);
     }
     else
-    { /*将未完成的代码补全,提示：此处添加一条语句*/
+    {
+        rear = rear + 1; /*将未完成的代码补全,提示：此处添加一条语句*/
         printf("\n\n\t\t请登记所买机票信息:\n");
         printf("\n\t\t请输入旅客姓名:");
         scanf("%s", s1);
@@ -72,7 +83,7 @@ void enqueue() //入队操作
         strcpy(q[rear].time, s4);
         strcpy(q[rear].flay, s5);
     }
-} /*ENQNQUEUE*/
+}
 
 void dequeue() //删除机票登记信息即出队操作
 {
@@ -84,7 +95,7 @@ void dequeue() //删除机票登记信息即出队操作
     }
     else
     {
-        /*将未完成的代码补全,提示：此处添加一条语句*/
+        front = front + 1; /*将未完成的代码补全,提示：此处添加一条语句*/
         printf("\n\n\t\t删除机票登记:\n\n\t\t");
         printf("旅客姓名:%s\n\t\t", q[front].name);
         printf("旅客姓名:%s\n\t\t", q[front].first);
@@ -93,7 +104,7 @@ void dequeue() //删除机票登记信息即出队操作
         printf("起飞时间:%s\n\t\t", q[front].flay);
     }
     getchar();
-} /*DEQUEUE*/
+}
 
 void main()
 {
@@ -106,22 +117,25 @@ void main()
         switch (kk)
         {
         case 1:
-        {
             enqueue();
+            count = rear;
+            for (int i = 1; i <= count; i++)
+                printf("%s\t%s\t%s\t%s\t%s\n", q[i].name, q[i].first, q[i].dist, q[i].time, q[i].first);
             break;
-        }
         case 2:
-        {
             dequeue();
+            for (int i = front + 1; i <= count; i++)
+                printf("%s\t%s\t%s\t%s\t%s\n", q[i].name, q[i].first, q[i].dist, q[i].time, q[i].first);
+
             break;
-        }
         case 0:
-        {
             good_bye();
             exit(0);
-        }
+        default:
+            printf("非法输入\n");
+            exit(0);
         }
         getchar();
         getchar();
     } while (kk != 0);
-} /*MAIN*/
+}
