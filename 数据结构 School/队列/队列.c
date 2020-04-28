@@ -54,7 +54,7 @@ int menu_select()
 
 void enqueue() //入队操作
 {
-    char s1[10], s2[10], s3[10], s4[10], s5[10];
+    char s1[100], s2[100], s3[100], s4[100], s5[100];
     if (rear == MAX)
         rear = 1;
     else if (((rear + 1) % MAX) == front)
@@ -118,15 +118,20 @@ void main()
         {
         case 1:
             enqueue();
+            printf("========================================================\n");
+            printf("\n买票登记信息\n");
             count = rear;
             for (int i = 1; i <= count; i++)
-                printf("%s\t%s\t%s\t%s\t%s\n", q[i].name, q[i].first, q[i].dist, q[i].time, q[i].first);
+                printf("%s\t%s\t%s\t%s\t%s\n", q[i].name, q[i].first, q[i].dist, q[i].time, q[i].flay);
+            printf("========================================================\n");
             break;
         case 2:
             dequeue();
+            printf("========================================================\n");
+            printf("\n买票登记信息\n");
             for (int i = front + 1; i <= count; i++)
-                printf("%s\t%s\t%s\t%s\t%s\n", q[i].name, q[i].first, q[i].dist, q[i].time, q[i].first);
-
+                printf("%s\t%s\t%s\t%s\t%s\n", q[i].name, q[i].first, q[i].dist, q[i].time, q[i].flay);
+            printf("========================================================\n");
             break;
         case 0:
             good_bye();
