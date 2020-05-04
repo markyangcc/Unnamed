@@ -31,9 +31,9 @@ int *search(char *txt, char *pat) //Naive Pattern Searching and replacement algo
 
         if (j == pat_len)
         {
-            printf("\nPattern matching successful!\n");
-            printf("The pattern string appeared at index %d\n", i);
 
+            printf("\n模式匹配成功！\n");
+            printf("模式字符串出现在位置(从0开始计数)：%d\n", i);
             foundindex[++result_matched] = i;
         }
     }
@@ -84,13 +84,15 @@ int main(void) // Driver program to test above function
     char replacetxt[] = "abdc";
     // char replacetxt[] = "p"; //Both effective
 
+    char bak_txt[TXTSIZE];
+    strcpy(bak_txt, txt);
+
     int *foundindex = search(txt, pat);
 
     int count = 0; //count times when replacing patterns
     replace(txt, pat, replacetxt, foundindex, count);
 
-    printf("\nReplaced string: ");
-    puts(txt);
-
+    printf("\n未替换的字符串:\t%s", bak_txt);
+    printf("\n替换后的字符串:\t%s", txt);
     return 0;
 }
