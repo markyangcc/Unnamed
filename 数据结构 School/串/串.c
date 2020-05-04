@@ -16,8 +16,9 @@ int search(char *txt, char *pat) //Naive Pattern Searching and replacement algor
 {
     int txt_len = strlen(txt);
     int pat_len = strlen(pat);
-    const int maxfoundnum = txt_len / pat_len;
-    //原来想用 maxfoundnum 以节省空间，但是又需要static保存数组地址，static限定的数组不允许大小为变量，而且strlen()无法在编译时起作用
+    // const int maxfoundnum = txt_len / pat_len;
+    //原来想用 maxfoundnum 以节省空间，但是又需要static保存数组地址，static限定的数组不允许大小为变量，
+    // 而且strlen()无法在编译时起作用,只能在运行时才起作用
 
     int result_matched = 0;
     // int foundindex = (int)malloc(sizeof(int) * maxfoundnum + sizeof(int));
@@ -45,18 +46,33 @@ int search(char *txt, char *pat) //Naive Pattern Searching and replacement algor
     return foundindex;
 }
 
-void replace(char *txt, char *pat, char *replacetxt, int foundindex)
+void replace(char *txt, char *pat, char *replacetxt, int *foundindex,  int count)
 {
+    if (count > foundindex[0])
+        return;
+
     int txt_len = strlen(txt);
     int pat_len = strlen(pat);
     int replacetxt_len = strlen(replacetxt);
 
-    if (TXTSIZE < txt_len + (replacetxt_len - pat_len) * result_matched)
+    if (TXTSIZE < txt_len + (replacetxt_len - pat_len) * foundindex[0])
     {
         printf("String array overflow.\n");
         exit(EXIT_FAILURE);
     }
 
+    char temp[TXTSIZE];
+    int i = 1;
+    strcpy(temp, txt + *(foundindex + i) + pat_len);
+    strcpy(txt + *(foundindex + i), replacetxt);
+    strcpy(txt + *(foundindex + i) + replacetxt_len, temp);
+    i++;
+    for (int j = 0; j < foundindex[0]; j++)
+    {
+        *(foundindex + i) += (replacetxt_len - pat_len);
+    }
+    count++;
+    replace(txt, pat, replacetxt, foundindex, count);
 }
 
 /* Driver program to test above function */
@@ -73,7 +89,8 @@ int main(void)
         printf("%d\t", *(foundindex + i + 1));
     }
 
-    replace(txt, pat, replacetxt, foundindex);
-
+    int count = 0;
+    replace(txt, pat, replacetxt, foundindex, count);
+    puts(txt);
     return 0;
 }
