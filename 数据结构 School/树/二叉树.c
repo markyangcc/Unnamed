@@ -73,33 +73,19 @@ void postorder(struct Node *root)
 int main(void)
 {
     struct Node *root = NULL;
-
-    for (int i = 0; i < 5; i++)
+    printf("Please enter the characters in one line(then press enter):");
+    while (1)
     {
-        char data;
-        if (data == '\n')
-            break;
+        char ch, data;
 
-        printf("Please enter the characters:");
-        scanf("%c", &data);
+        scanf("%c", &ch);
+        if (ch == '\n')
+            break;
+        else
+            data = ch;
+
         insert(&root, data);
     }
-
-    /* insert(&root, 'a');
-    insert(&root, 'b');
-    insert(&root, 'c');
-    insert(&root, ' ');
-    insert(&root, ' ');
-    insert(&root, 'd');
-    insert(&root, 'e');
-    insert(&root, ' ');
-    insert(&root, 'g');
-    insert(&root, ' ');
-    insert(&root, ' ');
-    insert(&root, 'f');
-    insert(&root, ' ');
-    insert(&root, ' ');
-    insert(&root, ' '); */
 
     printf("preorder display :\n");
     preorder(root);
