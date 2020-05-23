@@ -46,7 +46,7 @@ void preorder(struct Node *root)
 {
     if (root != NULL)
     {
-        printf("%c-", root->data);
+        printf("%2c", root->data);
         preorder(root->leftchild);
         preorder(root->rightchild);
     }
@@ -56,7 +56,7 @@ void inorder(struct Node *root)
     if (root != NULL)
     {
         preorder(root->leftchild);
-        printf("%c-", root->data);
+        printf("%2c", root->data);
         preorder(root->rightchild);
     }
 }
@@ -66,7 +66,7 @@ void postorder(struct Node *root)
     {
         preorder(root->leftchild);
         preorder(root->rightchild);
-        printf("%c-", root->data);
+        printf("%2c", root->data);
     }
 }
 
@@ -77,12 +77,11 @@ int main(void)
     for (int i = 0; i < 5; i++)
     {
         char data;
-        if (data == EOF)
+        if (data == '\n')
             break;
 
-        static int count = 1;
-        printf("Please enter the %d character:", count++);
-        scanf("%c ", &data);
+        printf("Please enter the characters:");
+        scanf("%c", &data);
         insert(&root, data);
     }
 
