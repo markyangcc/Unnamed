@@ -20,18 +20,10 @@ int insert(struct Node **root, int data)
     }
     else
     {
-        if (data < (*root)->data)
-        {
 
-            return insert(&(*root)->leftchild, data);
-        }
-        else if (data > (*root)->data)
-        {
+        return insert(&(*root)->leftchild, data);
 
-            return insert(&(*root)->rightchild, data);
-        }
-        else
-            return -1;
+        return insert(&(*root)->rightchild, data);
     }
 }
 void search(int data);
@@ -39,7 +31,7 @@ void preorder(struct Node *root)
 {
     if (root != NULL)
     {
-        printf("%d\t", root->data);
+        printf("%2c", root->data);
         preorder(root->leftchild);
         preorder(root->rightchild);
     }
@@ -49,7 +41,7 @@ void inorder(struct Node *root)
     if (root != NULL)
     {
         preorder(root->leftchild);
-        printf("%d\t", root->data);
+        printf("%2c", root->data);
         preorder(root->rightchild);
     }
 }
@@ -59,18 +51,26 @@ void postorder(struct Node *root)
     {
         preorder(root->leftchild);
         preorder(root->rightchild);
-        printf("%d\t", root->data);
+        printf("%2c", root->data);
     }
 }
 
 int main(void)
 {
     struct Node *root = NULL;
+    printf("Please enter the characters in one line(then press enter):");
+    while (1)
+    {
+        char ch, data;
 
-    insert(&root, 5);
-    insert(&root, 6);
-    insert(&root, 7);
-    insert(&root, 3);
+        scanf("%c", &ch);
+        if (ch == '\n')
+            break;
+        else
+            data = ch;
+
+        insert(&root, data);
+    }
 
     printf("preorder display :\n");
     preorder(root);

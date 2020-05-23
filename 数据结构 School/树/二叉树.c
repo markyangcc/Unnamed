@@ -3,24 +3,42 @@
 
 struct Node
 {
-    int data;
+    char data;
     struct Node *leftchild;
     struct Node *rightchild;
 };
 
-void CreateBinaryTree(struct Node **T)
+int insert(struct Node **root, int data); //Pass the pointer point to the address of the root,
+                                          // because we need to change the root's value in other functions
+void preorder(struct Node *root);
+void inorder(struct Node *root);
+void postorder(struct Node *root);
+
+int main(void)
 {
-    char ch;
-    scanf("%c", &ch); //读入一个字符
-    if (ch == ' ')
-        (*T) = NULL;
-    else
+    struct Node *root = NULL;
+    printf("Please enter the characters in one line(then press enter):");
+    while (1)
     {
-        (*T) = (struct Node *)malloc(sizeof(struct Node)); //生成一个新结点
-        (*T)->data = ch;
-        CreateBinaryTree((*T)->leftchild);  //生成左子树
-        CreateBinaryTree((*T)->rightchild); //生成右子树
+        char ch, data; //ch is a temp variable
+        scanf("%c", &ch);
+
+        if (ch == '\n') //prevent \n to be treated as an input character
+            break;      //when ch is \n, break the loop, so insert() won't going to work
+        else
+            data = ch;
+
+        insert(&root, data);
     }
+
+    printf("preorder display :\n");
+    preorder(root);
+    printf("\ninorder display:\n");
+    inorder(root);
+    printf("\npostorder display:\n");
+    postorder(root);
+
+    return 0;
 }
 
 int insert(struct Node **root, int data)
@@ -29,19 +47,17 @@ int insert(struct Node **root, int data)
     {
         (*root) = malloc(sizeof(struct Node));
         (*root)->data = data;
-        (*root)->leftchild = NULL;
+        (*root)->leftchild = NULL; //Prevent memory leak, cause a pointer can point to any memory
         (*root)->rightchild = NULL;
         return 0;
     }
     else
     {
-
         return insert(&(*root)->leftchild, data);
-
         return insert(&(*root)->rightchild, data);
     }
 }
-void search(int data);
+
 void preorder(struct Node *root)
 {
     if (root != NULL)
@@ -68,31 +84,4 @@ void postorder(struct Node *root)
         preorder(root->rightchild);
         printf("%2c", root->data);
     }
-}
-
-int main(void)
-{
-    struct Node *root = NULL;
-    printf("Please enter the characters in one line(then press enter):");
-    while (1)
-    {
-        char ch, data;
-
-        scanf("%c", &ch);
-        if (ch == '\n')
-            break;
-        else
-            data = ch;
-
-        insert(&root, data);
-    }
-
-    printf("preorder display :\n");
-    preorder(root);
-    printf("\ninorder display:\n");
-    inorder(root);
-    printf("\npostorder display:\n");
-    postorder(root);
-
-    return 0;
 }
