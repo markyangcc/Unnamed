@@ -26,6 +26,17 @@ bool isEmpty(struct sNode *top);
 
 int main(void)
 {
+    printf("建立的二叉树结构如下所示\n");
+    printf("           a      \n");
+    printf("          /       \n");
+    printf("         b        \n");
+    printf("        / \\       \n");
+    printf("       c   d      \n");
+    printf("          / \\     \n");
+    printf("         e   f    \n");
+    printf("          \\       \n");
+    printf("           g      \n");
+
     struct tNode *root = newtNode('a');
     root->left = newtNode('b');
     root->right = newtNode('c');

@@ -15,6 +15,17 @@ struct Node *newtNode(int data);
 
 int main(void)
 {
+    printf("建立的二叉树结构如下所示\n");
+    printf("           a      \n");
+    printf("          /       \n");
+    printf("         b        \n");
+    printf("        / \\       \n");
+    printf("       c   d      \n");
+    printf("          / \\     \n");
+    printf("         e   f    \n");
+    printf("          \\       \n");
+    printf("           g      \n");
+    
     struct Node *root = newtNode('a');
     root->left = newtNode('b');
     root->right = newtNode('c');
