@@ -41,7 +41,7 @@ void inorder(struct tNode *root)
             if (!isEmpty(s))
             {
                 current = pop(&s);
-                printf("%d ", current->data);
+                printf("%c ", current->data);
 
                 current = current->right; //we have visited the node and its left subtree. Now, it's right subtree's turn
             }
@@ -61,7 +61,7 @@ void preorder(struct tNode *root)
     {
         if (current != NULL)
         {
-            printf("%d ", current->data);
+            printf("%c ", current->data);
             push(&s, current);
             current = current->left;
         }
@@ -95,7 +95,7 @@ void postorder(struct tNode *root)
 
         if (current->right == NULL || current->right == lastvisit)
         {
-            printf("%d ", current->data);
+            printf("%c ", current->data);
             pop(&s);
             lastvisit = current;
             current = NULL;
@@ -169,11 +169,11 @@ int main(void)
 	/ \ 
 	4	 5 
 */
-    struct tNode *root = newtNode(1);
-    root->left = newtNode(2);
-    root->right = newtNode(3);
-    root->left->left = newtNode(4);
-    root->left->right = newtNode(5);
+    struct tNode *root = newtNode('a');
+    root->left = newtNode('b');
+    root->right = newtNode('c');
+    root->left->left = newtNode('d');
+    root->left->right = newtNode('e');
 
     printf("preorder display :\n");
     preorder(root);
