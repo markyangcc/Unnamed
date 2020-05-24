@@ -4,32 +4,25 @@
 struct Node
 {
     char data;
-    struct Node *leftchild;
-    struct Node *rightchild;
+    struct Node *left;
+    struct Node *right;
 };
 
-int insert(struct Node **root, int data); //Pass the pointer point to the address of the root,
-                                          // because we need to change the root's value in other functions
 void preorder(struct Node *root);
 void inorder(struct Node *root);
 void postorder(struct Node *root);
+struct Node *newtNode(int data);
 
 int main(void)
 {
-    struct Node *root = NULL;
-    printf("Please enter the characters in one line(then press enter):");
-    while (1)
-    {
-        char ch, data; //ch is a temp variable
-        scanf("%c", &ch);
-
-        if (ch == '\n') //prevent \n to be treated as an input character
-            break;      //when ch is \n, break the loop, so insert() won't going to work
-        else
-            data = ch;
-
-        insert(&root, data);
-    }
+    struct Node *root = newtNode('a');
+    root->left = newtNode('b');
+    root->right = newtNode('c');
+    root->left->left = newtNode('c');
+    root->left->right = newtNode('d');
+    root->left->right->left = newtNode('e');
+    root->left->right->right = newtNode('f');
+    root->left->right->left->right = newtNode('g');
 
     printf("preorder display :\n");
     preorder(root);
@@ -41,21 +34,14 @@ int main(void)
     return 0;
 }
 
-int insert(struct Node **root, int data)
+struct Node *newtNode(int data)
 {
-    if (*root == NULL)
-    {
-        (*root) = malloc(sizeof(struct Node));
-        (*root)->data = data;
-        (*root)->leftchild = NULL; //Prevent memory leak, cause a pointer can point to any memory
-        (*root)->rightchild = NULL;
-        return 0;
-    }
-    else
-    {
-        return insert(&(*root)->leftchild, data);
-        return insert(&(*root)->rightchild, data);
-    }
+    struct Node *Node = (struct Node *)malloc(sizeof(struct Node));
+    Node->data = data;
+    Node->left = NULL;
+    Node->right = NULL;
+
+    return (Node);
 }
 
 void preorder(struct Node *root)
@@ -63,25 +49,25 @@ void preorder(struct Node *root)
     if (root != NULL)
     {
         printf("%2c", root->data);
-        preorder(root->leftchild);
-        preorder(root->rightchild);
+        preorder(root->left);
+        preorder(root->right);
     }
 }
 void inorder(struct Node *root)
 {
     if (root != NULL)
     {
-        preorder(root->leftchild);
+        preorder(root->left);
         printf("%2c", root->data);
-        preorder(root->rightchild);
+        preorder(root->right);
     }
 }
 void postorder(struct Node *root)
 {
     if (root != NULL)
     {
-        preorder(root->leftchild);
-        preorder(root->rightchild);
+        preorder(root->left);
+        preorder(root->right);
         printf("%2c", root->data);
     }
 }
