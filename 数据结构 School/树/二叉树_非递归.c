@@ -2,9 +2,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-/* A binary tree tNode has data, pointer to left child 
-and a pointer to right child */
-
 struct tNode
 {
     int data;
@@ -12,25 +9,20 @@ struct tNode
     struct tNode *right;
 };
 
-/* Structure of a stack node. Linked List implementation is used for 
-stack. A stack node contains a pointer to tree node and a pointer to 
-next stack node */
 struct sNode
 {
     struct tNode *t;
     struct sNode *next;
 };
 
-/* Stack related functions */
 void push(struct sNode **top_ref, struct tNode *t);
 struct tNode *pop(struct sNode **top_ref);
 struct tNode *peek(struct sNode *top_ref);
 bool isEmpty(struct sNode *top);
 
-/* Iterative function for inorder tree traversal */
 void inorder(struct tNode *root)
 {
-    /* set current to root of binary tree */
+
     struct tNode *current = root;
     struct sNode *s = NULL; /* Initialize stack s */
     bool done = 0;
@@ -40,15 +32,10 @@ void inorder(struct tNode *root)
         /* Reach the left most tNode of the current tNode */
         if (current != NULL)
         {
-            /* place pointer to a tree node on the stack before traversing 
-		the node's left subtree */
-            push(&s, current);
+
+            push(&s, current); // place pointer to a tree node on the stack before traversing the node's left subtree
             current = current->left;
         }
-
-        /* backtrack from the empty subtree and visit the tNode 
-	at the top of the stack; however, if the stack is empty, 
-	you are done */
         else
         {
             if (!isEmpty(s))
@@ -56,13 +43,12 @@ void inorder(struct tNode *root)
                 current = pop(&s);
                 printf("%d ", current->data);
 
-                /* we have visited the node and its left subtree. Now, it's right subtree's turn */
-                current = current->right;
+                current = current->right; //we have visited the node and its left subtree. Now, it's right subtree's turn
             }
             else
                 done = 1;
         }
-    } /* end of while */
+    }
 }
 
 void preorder(struct tNode *root)
@@ -95,7 +81,7 @@ void preorder(struct tNode *root)
 void postorder(struct tNode *root)
 {
     struct tNode *current = root;
-    struct tNode *lastvisit = root;
+    struct tNode *lastvisit = root; //need to set a symbol to flag if the node is visited or not when postorder
     struct sNode *s = NULL;
 
     while (current != NULL || !isEmpty(s))
@@ -105,7 +91,7 @@ void postorder(struct tNode *root)
             push(&s, current);
             current = current->left;
         }
-        current = peek(s);
+        current = peek(s); //use peek() not pop() like preorder() and inorder()
 
         if (current->right == NULL || current->right == lastvisit)
         {
@@ -119,11 +105,9 @@ void postorder(struct tNode *root)
     }
 }
 
-/* UTILITY FUNCTIONS */
-/* Function to push an item to sNode*/
 void push(struct sNode **top_ref, struct tNode *t)
 {
-    /* allocate tNode */
+
     struct sNode *new_tNode = (struct sNode *)malloc(sizeof(struct sNode));
 
     if (new_tNode == NULL)
@@ -131,30 +115,21 @@ void push(struct sNode **top_ref, struct tNode *t)
         printf("Stack Overflow\n");
         exit(0);
     }
-
-    /* put in the data */
     new_tNode->t = t;
-
-    /* link the old list off the new tNode */
     new_tNode->next = (*top_ref);
-
-    /* move the head to point to the new tNode */
     (*top_ref) = new_tNode;
 }
 
-/* The function returns true if stack is empty, otherwise false */
 bool isEmpty(struct sNode *top)
 {
     return (top == NULL) ? 1 : 0;
 }
 
-/* Function to pop an item from stack*/
 struct tNode *pop(struct sNode **top_ref)
 {
     struct tNode *res;
     struct sNode *top;
 
-    /*If sNode is empty then error */
     if (isEmpty(*top_ref))
     {
         printf("Stack Underflow \n");
@@ -174,8 +149,6 @@ struct tNode *peek(struct sNode *top_ref)
     return top_ref->t;
 }
 
-/* Helper function that allocates a new tNode with the 
-given data and NULL left and right pointers. */
 struct tNode *newtNode(int data)
 {
     struct tNode *tNode = (struct tNode *)
@@ -187,10 +160,8 @@ struct tNode *newtNode(int data)
     return (tNode);
 }
 
-/* Driver program to test above functions*/
 int main(void)
 {
-
     /* Constructed binary tree is 
 			1 
 		/ \ 
