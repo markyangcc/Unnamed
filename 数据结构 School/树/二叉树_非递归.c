@@ -28,7 +28,7 @@ struct tNode *peek(struct sNode *top_ref);
 bool isEmpty(struct sNode *top);
 
 /* Iterative function for inorder tree traversal */
-void inOrder(struct tNode *root)
+void inorder(struct tNode *root)
 {
     /* set current to root of binary tree */
     struct tNode *current = root;
@@ -97,9 +97,8 @@ void postorder(struct tNode *root)
     struct tNode *current = root;
     struct tNode *lastvisit = root;
     struct sNode *s = NULL;
-    bool done = false;
 
-    while (!done)
+    while (current != NULL || !isEmpty(s))
     {
         while (current != NULL)
         {
@@ -205,8 +204,11 @@ int main(void)
     root->left->left = newtNode(4);
     root->left->right = newtNode(5);
 
-    //  inOrder(root);
-    // preorder(root);
+    printf("preorder display :\n");
+    preorder(root);
+    printf("\ninorder display:\n");
+    inorder(root);
+    printf("\npostorder display:\n");
     postorder(root);
 
     return 0;
