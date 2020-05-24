@@ -15,35 +15,10 @@ struct sNode
     struct sNode *next;
 };
 
-struct tNode *newtNode(int data);
-void inorder(struct tNode *root);
-void preorder(struct tNode *root);
-void postorder(struct tNode *root);
 void push(struct sNode **top_ref, struct tNode *t);
 struct tNode *pop(struct sNode **top_ref);
 struct tNode *peek(struct sNode *top_ref);
 bool isEmpty(struct sNode *top);
-
-int main(void)
-{
-    struct tNode *root = newtNode('a');
-    root->left = newtNode('b');
-    root->right = newtNode('c');
-    root->left->left = newtNode('c');
-    root->left->right = newtNode('d');
-    root->left->right->left = newtNode('e');
-    root->left->right->right = newtNode('f');
-    root->left->right->left->right = newtNode('g');
-
-    printf("preorder display :\n");
-    preorder(root);
-    printf("\ninorder display:\n");
-    inorder(root);
-    printf("\npostorder display:\n");
-    postorder(root);
-
-    return 0;
-}
 
 void inorder(struct tNode *root)
 {
@@ -169,7 +144,6 @@ struct tNode *pop(struct sNode **top_ref)
         return res;
     }
 }
-
 struct tNode *peek(struct sNode *top_ref)
 {
     return top_ref->t;
@@ -184,4 +158,25 @@ struct tNode *newtNode(int data)
     tNode->right = NULL;
 
     return (tNode);
+}
+
+int main(void)
+{
+    struct tNode *root = newtNode('a');
+    root->left = newtNode('b');
+    root->right = newtNode('c');
+    root->left->left = newtNode('c');
+    root->left->right = newtNode('d');
+    root->left->right->left = newtNode('e');
+    root->left->right->right = newtNode('f');
+    root->left->right->left->right = newtNode('g');
+
+    printf("preorder display :\n");
+    preorder(root);
+    printf("\ninorder display:\n");
+    inorder(root);
+    printf("\npostorder display:\n");
+    postorder(root);
+
+    return 0;
 }
