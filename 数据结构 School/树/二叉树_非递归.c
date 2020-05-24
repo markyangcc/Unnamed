@@ -24,13 +24,13 @@ void inorder(struct tNode *root)
 {
 
     struct tNode *current = root;
-    struct sNode *s = NULL; /* Initialize stack s */
+    struct sNode *s = NULL; // Initialize stack s
     bool done = 0;
 
     while (!done)
     {
-        /* Reach the left most tNode of the current tNode */
-        if (current != NULL)
+
+        if (current != NULL) // Reach the left most tNode of the current tNode
         {
 
             push(&s, current); // place pointer to a tree node on the stack before traversing the node's left subtree
@@ -162,18 +162,14 @@ struct tNode *newtNode(int data)
 
 int main(void)
 {
-    /* Constructed binary tree is 
-			1 
-		/ \ 
-		2	 3 
-	/ \ 
-	4	 5 
-*/
     struct tNode *root = newtNode('a');
     root->left = newtNode('b');
     root->right = newtNode('c');
-    root->left->left = newtNode('d');
-    root->left->right = newtNode('e');
+    root->left->left = newtNode('c');
+    root->left->right = newtNode('d');
+    root->left->right->left = newtNode('e');
+    root->left->right->right = newtNode('f');
+    root->left->right->left->right = newtNode('g');
 
     printf("preorder display :\n");
     preorder(root);
