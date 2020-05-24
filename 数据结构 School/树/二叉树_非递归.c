@@ -2,244 +2,212 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define MAX 100 //定义堆栈最大容量
+/* A binary tree tNode has data, pointer to left child 
+and a pointer to right child */
 
-enum RVISIT
+struct tNode
 {
-    Rchildnovisit,
-    Rchildvisit
+    int data;
+    struct tNode *left;
+    struct tNode *right;
 };
 
-//在后序遍历二叉树时用来指示是否已访问过右子树
-typedef struct BiTNode //定义二叉树节点结构
+/* Structure of a stack node. Linked List implementation is used for 
+stack. A stack node contains a pointer to tree node and a pointer to 
+next stack node */
+struct sNode
 {
-    char data;                       //数据域
-    struct BiTNode *lchild, *rchild; //左右孩子指针域
-} BiTNode;
+    struct tNode *t;
+    struct sNode *next;
+};
 
-typedef struct //定义堆栈结构
+/* Stack related functions */
+void push(struct sNode **top_ref, struct tNode *t);
+struct tNode *pop(struct sNode **top_ref);
+struct tNode *peek(struct sNode *top_ref);
+bool isEmpty(struct sNode *top);
+
+/* Iterative function for inorder tree traversal */
+void inOrder(struct tNode *root)
 {
-    struct BINode *elem[MAX]; //栈区
-    int top;                  //栈顶指针
-} BiTreeStack;
-void Initial(BiTreeStack *);                //初始化一个堆栈
-bool Push(BiTreeStack *, struct BINode *);  //将一个元素入栈
-bool Pop(BiTreeStack *, struct BINode * &;  //将一个元素出栈
-bool Gettop(BiTreeStack, struct BINode * ); //取得堆栈栈顶元素
-bool StackEmpty(BiTreeStack);       //判断堆栈是否已空
-void CreateBiTree(struct BINode * );        //生成一个二叉树
-void PreOrder(struct BINode *);              //先序非递归遍历二叉树
-void InOrder(struct BINode *);               //中序非递归遍历二叉树
-void PostOrder(struct BINode *);             //后序非递归遍历二叉树
+    /* set current to root of binary tree */
+    struct tNode *current = root;
+    struct sNode *s = NULL; /* Initialize stack s */
+    bool done = 0;
+
+    while (!done)
+    {
+        /* Reach the left most tNode of the current tNode */
+        if (current != NULL)
+        {
+            /* place pointer to a tree node on the stack before traversing 
+		the node's left subtree */
+            push(&s, current);
+            current = current->left;
+        }
+
+        /* backtrack from the empty subtree and visit the tNode 
+	at the top of the stack; however, if the stack is empty, 
+	you are done */
+        else
+        {
+            if (!isEmpty(s))
+            {
+                current = pop(&s);
+                printf("%d ", current->data);
+
+                /* we have visited the node and its left subtree. Now, it's right subtree's turn */
+                current = current->right;
+            }
+            else
+                done = 1;
+        }
+    } /* end of while */
+}
+
+void preorder(struct tNode *root)
+{
+    struct tNode *current = root;
+    struct sNode *s = NULL;
+    bool done = false;
+
+    while (!done)
+    {
+        if (current != NULL)
+        {
+            printf("%d ", current->data);
+            push(&s, current);
+            current = current->left;
+        }
+        else
+        {
+            if (!isEmpty(s))
+            {
+                current = pop(&s);
+                current = current->right;
+            }
+            else
+                done = true;
+        }
+    }
+}
+
+void postorder(struct tNode *root)
+{
+    struct tNode *current = root;
+    struct tNode *lastvisit = root;
+    struct sNode *s = NULL;
+    bool done = false;
+
+    while (!done)
+    {
+        while (current != NULL)
+        {
+            push(&s, current);
+            current = current->left;
+        }
+        current = peek(s);
+
+        if (current->right == NULL || current->right == lastvisit)
+        {
+            printf("%d ", current->data);
+            pop(&s);
+            lastvisit = current;
+            current = NULL;
+        }
+        else
+            current = current->right;
+    }
+}
+
+/* UTILITY FUNCTIONS */
+/* Function to push an item to sNode*/
+void push(struct sNode **top_ref, struct tNode *t)
+{
+    /* allocate tNode */
+    struct sNode *new_tNode = (struct sNode *)malloc(sizeof(struct sNode));
+
+    if (new_tNode == NULL)
+    {
+        printf("Stack Overflow\n");
+        exit(0);
+    }
+
+    /* put in the data */
+    new_tNode->t = t;
+
+    /* link the old list off the new tNode */
+    new_tNode->next = (*top_ref);
+
+    /* move the head to point to the new tNode */
+    (*top_ref) = new_tNode;
+}
+
+/* The function returns true if stack is empty, otherwise false */
+bool isEmpty(struct sNode *top)
+{
+    return (top == NULL) ? 1 : 0;
+}
+
+/* Function to pop an item from stack*/
+struct tNode *pop(struct sNode **top_ref)
+{
+    struct tNode *res;
+    struct sNode *top;
+
+    /*If sNode is empty then error */
+    if (isEmpty(*top_ref))
+    {
+        printf("Stack Underflow \n");
+        exit(0);
+    }
+    else
+    {
+        top = *top_ref;
+        res = top->t;
+        *top_ref = top->next;
+        free(top);
+        return res;
+    }
+}
+struct tNode *peek(struct sNode *top_ref)
+{
+    return top_ref->t;
+}
+
+/* Helper function that allocates a new tNode with the 
+given data and NULL left and right pointers. */
+struct tNode *newtNode(int data)
+{
+    struct tNode *tNode = (struct tNode *)
+        malloc(sizeof(struct tNode));
+    tNode->data = data;
+    tNode->left = NULL;
+    tNode->right = NULL;
+
+    return (tNode);
+}
+
+/* Driver program to test above functions*/
 int main(void)
 {
-    struct BINode *T;
-    char ch, j;
-    int flag = 1;
-    bool temp;
 
-    //--------------------程序解说-----------------
-    printf("本程序实现二叉树的非递归遍历操作。\n");
-    printf("可以实现建立二叉树，非递归先序、中序、后序遍历二叉树\n");
-    //---------------------------------------------
-    printf("请将先序遍历二叉树的结果输入以建立二叉树。\n");
-    printf("对于叶子结点以空格表示。\n");
-    printf("例如:abc  de g  f   (回车)，建立如下二叉树：\n");
-    printf("           a      \n");
-    printf("          /       \n");
-    printf("         b        \n");
-    printf("        / \\       \n");
-    printf("       c   d      \n");
-    printf("          / \\     \n");
-    printf("         e   f    \n");
-    printf("          \\       \n");
-    printf("           g      \n");
+    /* Constructed binary tree is 
+			1 
+		/ \ 
+		2	 3 
+	/ \ 
+	4	 5 
+*/
+    struct tNode *root = newtNode(1);
+    root->left = newtNode(2);
+    root->right = newtNode(3);
+    root->left->left = newtNode(4);
+    root->left->right = newtNode(5);
 
-    CreateBiTree(T); //生成一棵二叉树
-    getchar();
-    while (flag)
-    {
-        printf("请选择: \n");
-        printf("1.非递归先序遍历\n");
-        printf("2.非递归中序遍历\n");
-        printf("3.非递归后序遍历\n");
-        printf("4.退出程序\n");
-        scanf(" %c", &j);
-        switch (j)
-        {
-        case '1':
-            if (T)
-            {
-                printf("先序遍历二叉树:");
-                PreOrder(T);
-                printf("\n");
-            }
-            else
-                printf("二叉树为空!\n");
-            break;
-        case '2':
-            if (T)
-            {
-                printf("中序遍历二叉树:");
-                InOrder(T);
-                printf("\n");
-            }
-            else
-                printf("二叉树为空!\n");
-            break;
-        case '3':
-            if (T)
-            {
-                printf("后序遍历二叉树");
-                PostOrder(T);
-                printf("\n");
-            }
-            else
-                printf("二叉树为空!\n");
-            break;
-        default:
-            flag = 0;
-            printf("程序运行结束，按任意键结束!\n");
-        }
-    }
+    //  inOrder(root);
+    // preorder(root);
+    postorder(root);
+
     return 0;
-}
-
-void Initial(BiTreeStack *S)
-{
-    S.top = -1; //栈顶指针初始化为-1
-}
-
-bool Push(BiTreeStack *S, struct BINode * ch)
-{ //将元素ch入栈，成功返回True,失败返回False
-    if (S.top >= MAX - 1)
-        return False; //判断是否栈满
-    else
-    {
-        S.top++;            //栈顶指针top加一
-        S.elem[S.top] = ch; //入栈
-        return True;
-    }
-}
-
-bool Pop(BiTreeStack *S, struct BINode **ch)
-{ //将栈顶元素出栈,成功返回True，并用ch返回该//元素值，失败返回False
-    if (S.top <= -1)
-        return False; //判断是否栈空
-    else
-    {
-        S.top--; //栈顶指针减一
-        ch = S.elem[S.top + 1];
-        return True;
-    }
-}
-bool Gettop(BiTreeStack S, struct BINode * *ch)
-{ //取得栈顶元素，成功返回True，并用ch返回该   //元素值，失败返回False
-    if (S.top <= -1)
-        return False;
-    else
-    {
-        ch = S.elem[S.top]; //显示栈顶元素
-        return True;
-    }
-}
-
-bool StackEmpty(BiTreeStack S)
-{ //判断堆栈是否已空，若空返回True,不空返回//False
-    if (S.top <= -1)
-        return True;
-    else
-        return False;
-}
-void CreateBiTree(struct BINode **T)
-{ //生成一棵二叉树，该二叉树以T为根结点
-    char ch;
-    scanf("%c", &ch); //读入一个字符
-    if (ch == ' ')
-        T = NULL;
-    else
-    {
-        T = (BiTNode *)malloc(sizeof(BiTNode)); //生成一个新结点
-        T->data = ch;
-        CreateBiTree(T->lchild); //生成左子树
-        CreateBiTree(T->rchild); //生成右子树
-    }
-}
-void PreOrder(struct BINode * T)
-{ //先序非递归遍历以T为根结点的二叉树
-    BiTreeStack S;
-    struct BINode *p;
-    Initial(S);
-    p = T;
-    while (p || !StackEmpty(S))
-    {
-        if (p)
-        {
-            printf("%c", p->data);
-            Push(S, p);
-            p = p->lchild;
-        }
-        else
-        {
-            Pop(S, p);
-            p = p->rchild;
-        }
-    }
-    printf("\n");
-}
-void InOrder(struct BINode * T)
-{ //中序非递归遍历以T为根结点的二叉树
-    BiTreeStack S;
-    struct BINode *p;
-    Initial(S);
-    p = T;
-    while (p || !StackEmpty(S))
-    {
-        if (p)
-        {
-            Push(S, p);
-            p = p->lchild;
-        }
-        else
-        {
-            Pop(S, p);
-            printf("%c", p->data);
-            p = p->rchild;
-        }
-    }
-    printf("\n");
-}
-void PostOrder(struct BINode * T)
-{ //后序非递归遍历以T为根结点的二叉树
-    BiTreeStack S;
-    struct BINode *p, *q;
-    RVISIT tag;
-    Initial(S);
-    p = T;
-    do
-    {
-        while (p)
-        {
-            Push(S, p);
-            p = p->lchild;
-        }
-        q = NULL;
-        tag = Rchildvisit;
-        while (!StackEmpty(S) && tag)
-        {
-            Gettop(S, p);
-            if (p->rchild == q)
-            {
-                printf("%c", p->data);
-                Pop(S, p);
-                q = p;
-            }
-            else
-            {
-                p = p->rchild;
-                tag = Rchildnovisit;
-            }
-        }
-    } while (!StackEmpty(S));
-    printf("\n");
 }
