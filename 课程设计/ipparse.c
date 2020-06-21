@@ -4,13 +4,14 @@
 #include <time.h>
 #include <string>
 #include <fstream> //文件的输入输出;
-#include "pcap.h"
+#include <pcap.h>
 
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "wpcap.lib")
+
 using namespace std;
 
-/*下边是以太网的协议格式 */
+/*下边是以太网的协议格式*/
 struct ethernet_header
 {
 	u_int8_t ether_dhost[6]; /*目的以太地址*/
@@ -30,12 +31,12 @@ struct ip_header
 	u_int8_t ip_header_length : 4,
 		ip_version : 4;
 #endif
-	u_int8_t ip_tos;                       /*服务类型Differentiated Services  Field*/
+	u_int8_t ip_tos;                       /*服务类型Differentiated Services Field*/
 	u_int16_t ip_length;                   /*总长度Total Length*/
 	u_int16_t ip_id;                       /*标识identification*/
 	u_int16_t ip_off;                      /*片偏移*/
 	u_int8_t ip_ttl;                       /*生存时间Time To Live*/
-	u_int8_t ip_protocol;                  /*协议类型（TCP或者UDP协议）*/
+	u_int8_t ip_protocol;                  /*协议类型(TCP或者UDP协议)*/
 	u_int16_t ip_checksum;                 /*首部检验和*/
 	struct in_addr ip_source_address;      /*源IP*/
 	struct in_addr ip_destination_address; /*目的IP*/
@@ -167,7 +168,7 @@ void ip_protocol_packet_callback(u_char* argument, const struct pcap_pkthdr* pac
 	/*片偏移*/
 	u_char tos;
 	/*服务类型*/
-    u_int16_t checksum;
+	u_int16_t checksum;
 	/*首部检验和*/
 	ip_protocol = (struct ip_header*)(packet_content + 14); /*获得ip数据包的内容去掉以太头部*/
 	checksum = ntohs(ip_protocol->ip_checksum);
@@ -190,15 +191,13 @@ void ip_protocol_packet_callback(u_char* argument, const struct pcap_pkthdr* pac
 	/*获得ttl*/
 	printf("首部检验和:\t%d\n", checksum);
 	printf("源IP:\t%s\n", inet_ntoa(ip_protocol->ip_source_address));
-/*获得源ip地址*/
+	/*获得源ip地址*/
 	printf("目的IP:\t%s\n", inet_ntoa(ip_protocol->ip_destination_address)); /*获得目的ip地址*/
 	printf("协议号:\t%d\n", ip_protocol->ip_protocol);
 	/*获得协议类型*/
 	cout << "\n传输层协议是:\t";
 	switch (ip_protocol->ip_protocol)
-
 	{
-
 	case 6:
 		printf("TCP\n");
 		tcp_protocol_packet_callback(argument, packet_header, packet_content);
@@ -208,18 +207,16 @@ void ip_protocol_packet_callback(u_char* argument, const struct pcap_pkthdr* pac
 		break; /*17代表UDP*/
 	case 1:
 		printf("ICMP\n");
-		break; /*代表ICMP*/
+		break; /*1代表ICMP*/
 	case 2:
 		printf("IGMP\n");
-		break; /*代表IGMP*/
-	default: break;
-
+		break; /*2代表IGMP*/
+	default:
+		break;
 	}
-
 }
 
 void ethernet_protocol_packet_callback(u_char* argument, const struct pcap_pkthdr* packet_header, const u_char* packet_content)
-
 {
 	u_short ethernet_type;
 	/*以太网协议类型*/
@@ -227,12 +224,12 @@ void ethernet_protocol_packet_callback(u_char* argument, const struct pcap_pkthd
 	/*以太网协议变量*/
 	u_char* mac_string;
 	static int packet_number = 1;
-	printf("\n*** ****** ******* *********   ********* ******* ****** ***\n");
+	printf("\n**************************************************\n");
 	printf("\t!!!!!#    第 【 %d 】个IP数据包被捕获    #!!!!!\n", packet_number);
 	printf("\n==========   链路层(以太网协议)   ==========\n");
 	ethernet_protocol = (struct ethernet_header*)packet_content;
-	/*获得一太网协议数据内容*/
-	printf("以太网类型为 :\t");
+	/*获得以太网协议数据内容*/
+	printf("以太网类型为:\t");
 	ethernet_type = ntohs(ethernet_protocol->ether_type); /*获得以太网类型*/
 	printf("%04x\n", ethernet_type);
 
@@ -248,8 +245,8 @@ void ethernet_protocol_packet_callback(u_char* argument, const struct pcap_pkthd
 	case 0x8035:
 		printf("网络层是：\tRARP 协议\n");
 		break;
-	default: break;
-
+	default:
+		break;
 	}
 	/*获得Mac源地址*/
 	printf("Mac源地址:\t");
@@ -264,10 +261,11 @@ void ethernet_protocol_packet_callback(u_char* argument, const struct pcap_pkthd
 	switch (ethernet_type)
 	{
 	case 0x0800:
-	/*如果上层是IPv4ip协议,就调用分析ip协议的函数对ip包进行贩治*/
+		/*如果上层是IPv4ip协议,就调用分析ip协议的函数对ip包进行贩治*/
 		ip_protocol_packet_callback(argument, packet_header, packet_content);
 		break;
-	default: break;
+	default:
+     break;
 
 	}
 	packet_number++;
@@ -331,9 +329,9 @@ int main(void)
 	if ((adhandle = pcap_open_live(d->name, /* 设备名称*/
 		65536, /* 最大值.*/
 /*65536允许整个包在所有mac电脑上被捕获.*/
-		1, /* 混杂模式*/
+1, /* 混杂模式*/
 
-						/*
+				/*
 混杂模式是指一台主机能够接受所有经过它的数据流，不论这个数据流的目的地址是不是它，它都会接受这个数据包。也就是说，混杂模式下，网卡会把所有的发往它的包全部都接收。在这种情况下，可以接收同一集线器局域网的所有数据。
 */
 1000, /* 读超时为1秒*/
