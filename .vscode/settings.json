@@ -6,5 +6,8 @@
     "code-runner.executorMap": {
         "c": "cd $dir && gcc \"$fileName\" -o \"$fileNameWithoutExt\" && .\\\"$fileNameWithoutExt\""
     },
-    "code-runner.preserveFocus": false, // 若为false，run code后光标会聚焦到终端上。
+    "code-runner.preserveFocus": false,
+    "files.associations": {
+        "iostream": "cpp"
+    }, // 若为false，run code后光标会聚焦到终端上。
 }

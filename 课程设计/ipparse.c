@@ -22,21 +22,22 @@ typedef u_int32_t in_addr_t;
 struct ip_header
 {
 #ifdef WORKS_BIGENDIAN
-	u_int8_t ip_version : 4,  //version:4
-		ip_header_length : 4; //IP协议首部长度Header Length
+	u_int8_t ip_version : 4,  //协议类型 version
+		ip_header_length : 4; //首部长度 Length
 #else
 	u_int8_t ip_header_length : 4,
 		ip_version : 4;
 #endif
-	u_int8_t ip_tos;					   //服务类型Differentiated Services Field
-	u_int16_t ip_length;				   //总长度Total Length
-	u_int16_t ip_id;					   //标识identification
-	u_int16_t ip_off;					   //片偏移
-	u_int8_t ip_ttl;					   //生存时间Time To Live
-	u_int8_t ip_protocol;				   //协议类型(TCP或者UDP协议)
-	u_int16_t ip_checksum;				   //首部检验和
-	struct in_addr ip_source_address;	   //源IP
-	struct in_addr ip_destination_address; //目的IP
+	u_int8_t ip_tos;					   //服务类型 type of service
+	u_int16_t ip_length;				   //总长度 total Length
+	u_int16_t ip_id;					   //标识 identifier
+	u_int16_t flags : 3,				   //标志 flags
+		ip_offset : 13;					   //位偏移 offset
+	u_int8_t ip_ttl;					   //生存时间 Time To Live
+	u_int8_t ip_protocol;				   //协议类型(TCP or UDP) protocol
+	u_int16_t ip_checksum;				   //首部检验和 header checksum
+	struct in_addr ip_source_address;	   //源IP source ip addr
+	struct in_addr ip_destination_address; //目的IP destination ip addr
 };
 
 /*TCP首部的定义*/
@@ -103,51 +104,52 @@ void tcp_protocol_packet_callback(u_char *argument, const struct pcap_pkthdr *pa
 
 	printf("---------------------------------------\n");
 	printf("\nTransport layer (TCP protocol)\n");
-	printf("Source port：\t %d\n", source_port);
-	printf("Destination port：\t %d\n", destination_port);
+	printf("Source port：\t\t%d\n", source_port);
+	printf("Destination port：\t%d\n", destination_port);
 
 	int min = (destination_port < source_port) ? destination_port : source_port;
-	cout << "Application layer protocols is：\t";
+	cout << "Application layer protocols：";
 	switch (min)
 	{
 	case 80:
-		printf(" http 超文本传输协议（HTTP）");
+		printf("http");
 		break;
 	case 21:
-		printf(" ftp 文件传输协议（FTP）");
+		printf("ftp");
 		break;
 	case 23:
-		printf(" telnet Telnet 服务  ");
+		printf("telnet");
 		break;
 	case 25:
-		printf(" smtp 简单邮件传输协议（SMTP）");
+		printf("smtp");
 		break;
 	case 110:
-		printf(" pop3 邮局协议版本3 ");
+		printf("pop3");
 		break;
 	case 443:
-		printf(" https 安全超文本传输协议（HTTPS） ");
+		printf("https");
 		break;
 	default:
-		printf("Other protocols 其他类型");
+		printf("others");
 		break;
 	}
-	cout << endl;
-	printf("序列号：\t %u \n", sequence);
+	cout << endl
+		 << endl;
+	printf("序列号：\t%u \n", sequence);
 	printf("确认号：\t%u \n", acknowledgement);
 	printf("首部长度：\t%d \n", header_length);
 	printf("保留字段：\t%d \n", tcp_protocol->tcp_reserved);
 	printf("控制位：");
 	if (flags & 0x08)
-		printf("\t【推送 PSH】");
+		printf("\t推送 PSH");
 	if (flags & 0x10)
-		printf("\t【确认 ACK】 ");
+		printf("\t确认 ACK");
 	if (flags & 0x02)
-		printf("\t【同步 SYN】");
+		printf("\t同步 SYN");
 	if (flags & 0x20)
-		printf("\t【紧急 URG】");
+		printf("\t紧急 URG");
 	if (flags & 0x01)
-		printf("\t【终止 FIN】");
+		printf("\t终止 FIN");
 	if (flags & 0x04)
 		printf("\t【复位 RST】");
 
@@ -162,39 +164,23 @@ void ip_protocol_packet_callback(u_char *argument, const struct pcap_pkthdr *pac
 {
 	struct ip_header *ip_protocol; //ip协议变量
 
-	u_int header_length; //长度
-
-	u_int offset; //片偏移
-
-	u_char tos; //服务类型
-
-	u_int16_t checksum; //首部检验和
-
 	ip_protocol = (struct ip_header *)(packet_content + 14); //获得ip数据包的内容去掉以太头部
 
-	checksum = ntohs(ip_protocol->ip_checksum); //获得校验和
+	cout << "IP版本:\t\t"
+		 << "IPv" << (int)(ip_protocol->ip_version) << endl;						 //获取头部长度字段
+	cout << "IP头部长度:\t" << ((ip_protocol->ip_header_length & 0x0f) * 4) << endl; //获取头部长度字段
+	cout << "服务类型:\tPriority" << (ip_protocol->ip_tos >> 5) << ", Service" << ((ip_protocol->ip_length >> 1) & 0x0f) << endl;
+	cout << "总长度:\t\t" << ntohs(ip_protocol->ip_length) << endl;																											 //获取总长度字段
+	cout << "标识:\t\t" << ntohs(ip_protocol->ip_id) << endl;																												 //获取标识字段
+	cout << "分段标志:\t" << ((ip_protocol->flags >> 15) & 0x01) << ",DF= " << ((ip_protocol->flags >> 14) & 0x01) << ",Mf=" << ((ip_protocol->flags >> 13) & 0x01) << endl; //获得标志字段
+	cout << "分段偏移值:\t" << (ntohs(ip_protocol->ip_offset) & 0x1fff) << endl;																							 //获取分段偏移字段
+	cout << "生存时间:\t" << (int)ip_protocol->ip_ttl << endl;																												 //获取生存时间字段
+	cout << "协议:\t\t" << (int)ip_protocol->ip_protocol << endl;																											 //获取协议字段
+	cout << "头部校验和:\t" << ntohs(ip_protocol->ip_checksum) << endl;																										 //获取头校验和字段
+	cout << "源IP地址:\t" << inet_ntoa(ip_protocol->ip_source_address) << endl;																								 //获取源IP地址字段
+	cout << "目的IP地址:\t" << inet_ntoa(ip_protocol->ip_destination_address) << endl;
 
-	header_length = ip_protocol->ip_header_length * 4; //获得长度
-
-	tos = ip_protocol->ip_tos; //获得tos
-
-	offset = ntohs(ip_protocol->ip_off); //获得偏移量
-
-	printf("---------------------------------------\n");
-	printf("\nNetwork layer (IP protocol)\n");
-	printf("IP版本:\t\tIPv%d\n", ip_protocol->ip_version);
-	printf("IP协议首部长度:\t%d\n", header_length);
-	printf("服务类型:\t%d\n", tos);
-	printf("总长度:\t\t%d\n", ntohs(ip_protocol->ip_length));
-	printf("标识:\t\t%d\n", ntohs(ip_protocol->ip_id));
-	printf("片偏移:\t\t%d\n", (offset & 0x1fff) * 8);
-	printf("生存时间:\t%d\n", ip_protocol->ip_ttl);
-	printf("首部检验和:\t%d\n", checksum);
-	printf("源IP:\t%s\n", inet_ntoa(ip_protocol->ip_source_address));
-	printf("目的IP:\t%s\n", inet_ntoa(ip_protocol->ip_destination_address));
-	printf("协议号:\t%d\n", ip_protocol->ip_protocol);
-
-	cout << "\nThe transport layer protocol is:\t";
+	cout << "\nThe transport layer protocol:";
 	switch (ip_protocol->ip_protocol)
 	{
 	case 6:
@@ -225,8 +211,8 @@ void ethernet_protocol_packet_callback(u_char *argument, const struct pcap_pkthd
 	u_char *mac_string;
 
 	static int packet_number = 1;
-
-	printf("#############################################\n");
+	cout << endl
+		 << "=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=" << endl;
 	printf("\tThe Num %d IP packet is captured.\n", packet_number);
 	printf("\nLink layer (Ethernet protocol)\n");
 	ethernet_protocol = (struct ethernet_header *)packet_content; //获得以太网协议数据内容
@@ -238,15 +224,15 @@ void ethernet_protocol_packet_callback(u_char *argument, const struct pcap_pkthd
 	switch (ethernet_type) //判断以太网类型的值
 	{
 	case 0x0800:
-		cout << "The network layer is: IPv4 protocol\n"
+		cout << "The network layer: IPv4 protocol\n"
 			 << endl;
 		break;
 	case 0x0806:
-		cout << "The network layer is: ARP protocol\n"
+		cout << "The network layer: ARP protocol\n"
 			 << endl;
 		break;
 	case 0x8035:
-		cout << "The network layer is: RARP protocol\n"
+		cout << "The network layer: RARP protocol\n"
 			 << endl;
 		break;
 	default:
@@ -331,8 +317,8 @@ int main(int argc, char *argv[])
 	if ((adhandle = pcap_open_live(d->name,
 								   65536, //最大值65536,表示允许整个包在所有mac电脑上被捕获
 								   1,	  // 混杂模式
-								   /*混杂模式是指一台主机能够接受所有经过它的数据流，不论这个数据流的目的地址是不是它，它都会接受这个数据包。
-		也就是说，混杂模式下，网卡会把所有的发往它的包全部都接收。在这种情况下，可以接收同一集线器局域网的所有数据。*/
+										  /*混杂模式是指一台主机能够接受所有经过它的数据流，不论这个数据流的目的地址是不是它，它都会接受这个数据包。
+也就是说，混杂模式下，网卡会把所有的发往它的包全部都接收。在这种情况下，可以接收同一集线器局域网的所有数据。*/
 								   1000,  // 读超时为1秒
 								   errbuf // error buffer
 								   )) == NULL)
