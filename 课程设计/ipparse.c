@@ -1,3 +1,10 @@
+/*
+ * @Author: Yang GuangSheng 
+ * @Date: 2020-06-19 20:28:53 
+ * @Last Modified by: Yang GuangSheng
+ * @Last Modified time: 2020-06-19 20:33:20
+ */
+
 #include <iostream>
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -31,7 +38,7 @@ int main(int argc, char *argv[])
 {
     using namespace std;
 
-    ofstream outfile("D:\\file1.txt", ios::out);
+    ofstream outfile("file1.txt", ios::out);
 
     if (argc != 2)
     {
@@ -39,11 +46,12 @@ int main(int argc, char *argv[])
              << "请以下格式输入命令行:PackParse packet_sum" << endl;
         return 0;
     }
+    //WSADATA一种数据结构。这个结构被用来存储被 WSAStartup函数调用后返回的 Windows Sockets数据 它包含Winsock.dll执行的数据
     WSADATA WSAData;
     if (WSAStartup(MAKEWORD(2, 2), &WSAData) != 0)
     {
         cout << endl
-             << "WSASTartup初始化失败" << endl;
+             << "WSASTartup初始化失败" << endl; //返回值不等于0，说明初始化失败
         return 0;
     }
     SOCKET sock = socket(AF_INET, SOCK_RAW, IPPROTO_IP); //三个参分别为通信发生的区字段，套接字的类型，与IP协议
