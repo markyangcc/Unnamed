@@ -169,16 +169,19 @@ void ip_protocol_packet_callback(u_char *argument, const struct pcap_pkthdr *pac
 	cout << "IP版本:\t\t"
 		 << "IPv" << (int)(ip_protocol->ip_version) << endl;						 //获取头部长度字段
 	cout << "IP头部长度:\t" << ((ip_protocol->ip_header_length & 0x0f) * 4) << endl; //获取头部长度字段
-	cout << "服务类型:\tPriority" << (ip_protocol->ip_tos >> 5) << ", Service" << ((ip_protocol->ip_length >> 1) & 0x0f) << endl;
-	cout << "总长度:\t\t" << ntohs(ip_protocol->ip_length) << endl;																											 //获取总长度字段
-	cout << "标识:\t\t" << ntohs(ip_protocol->ip_id) << endl;																												 //获取标识字段
-	cout << "分段标志:\t" << ((ip_protocol->flags >> 15) & 0x01) << ",DF= " << ((ip_protocol->flags >> 14) & 0x01) << ",Mf=" << ((ip_protocol->flags >> 13) & 0x01) << endl; //获得标志字段
-	cout << "分段偏移值:\t" << (ntohs(ip_protocol->ip_offset) & 0x1fff) << endl;																							 //获取分段偏移字段
-	cout << "生存时间:\t" << (int)ip_protocol->ip_ttl << endl;																												 //获取生存时间字段
-	cout << "协议:\t\t" << (int)ip_protocol->ip_protocol << endl;																											 //获取协议字段
-	cout << "头部校验和:\t" << ntohs(ip_protocol->ip_checksum) << endl;																										 //获取头校验和字段
-	cout << "源IP地址:\t" << inet_ntoa(ip_protocol->ip_source_address) << endl;																								 //获取源IP地址字段
-	cout << "目的IP地址:\t" << inet_ntoa(ip_protocol->ip_destination_address) << endl;
+	cout << "服务类型:\tPriority" << (ip_protocol->ip_tos >> 5)
+		 << ", Service" << ((ip_protocol->ip_length >> 1) & 0x0f) << endl; //获取标志位
+	cout << "总长度:\t\t" << ntohs(ip_protocol->ip_length) << endl;		   //获取总长度字段
+	cout << "标识:\t\t" << ntohs(ip_protocol->ip_id) << endl;			   //获取标识字段
+	cout << "分段标志:\t" << ((ip_protocol->flags >> 15) & 0x01)
+		 << ",DF= " << ((ip_protocol->flags >> 14) & 0x01)
+		 << ",Mf=" << ((ip_protocol->flags >> 13) & 0x01) << endl;					   //获得标志字段
+	cout << "分段偏移值:\t" << (ntohs(ip_protocol->ip_offset) & 0x1fff) << endl;	   //获取分段偏移字段
+	cout << "生存时间:\t" << (int)ip_protocol->ip_ttl << endl;						   //获取生存时间字段
+	cout << "协议:\t\t" << (int)ip_protocol->ip_protocol << endl;					   //获取协议字段
+	cout << "头部校验和:\t" << ntohs(ip_protocol->ip_checksum) << endl;				   //获取头校验和字段
+	cout << "源IP地址:\t" << inet_ntoa(ip_protocol->ip_source_address) << endl;		   //获取源IP地址字段
+	cout << "目的IP地址:\t" << inet_ntoa(ip_protocol->ip_destination_address) << endl; //获取目的IP地址字段
 
 	cout << "\nThe transport layer protocol:";
 	switch (ip_protocol->ip_protocol)
@@ -328,7 +331,7 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 	cout << "\nListening to  " << d->description << "......" << endl;
-	pcap_freealldevs(alldevs); // 现在，我们不再需要设备列表, 释放它
+	pcap_freealldevs(alldevs); // 现在我们不再需要设备列表释放它
 
 	int cnt = -1;
 	cnt = atoi(argv[2]);
