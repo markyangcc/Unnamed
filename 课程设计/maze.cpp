@@ -76,11 +76,11 @@ Maze::Maze(int row, int col, int show)
         };
 
     //将迷宫数据导入迷宫数组中
-    for (int ii = 0; ii < row; ii++)
+    for (int i = 0; i < row; i++)
     {
-        for (int jj = 0; jj < col; jj++)
+        for (int j = 0; j < col; j++)
         {
-            maze[ii + 1][jj + 1] = mazeData[ii][jj];
+            maze[i + 1][j + 1] = mazeData[i][j];
         }
     }
 
@@ -94,11 +94,11 @@ Maze::Maze(int row, int col, int show)
         maze[c][0] = maze[c][col + 1] = 1;
     }
 
-    for (int iii = 0; iii < row + 2; iii++)
+    for (int i = 0; i < row + 2; i++)
     {
-        for (int jjj = 0; jjj < col + 2; jjj++)
+        for (int j = 0; j < col + 2; j++)
         {
-            mazeShow[iii][jjj] = maze[iii][jjj];
+            mazeShow[i][j] = maze[i][j];
         }
     }
     if (show)
@@ -107,7 +107,8 @@ Maze::Maze(int row, int col, int show)
             cout << endl;
     }
     cout << endl
-         << "原始的迷宫地图：" << endl;
+         << "Map of the original maze:" << endl;
+    // << "原始的迷宫地图：" << endl;
     ShowArray(maze, row + 2, col + 2);
 }
 
@@ -230,13 +231,13 @@ void Maze::DrawPath()
             cout << endl;
     }
     cout << endl
-         << "寻径后的迷宫地图：" << endl;
+         << "Maze path:" << endl;
     ShowArray(mazeShow, row + 2, col + 2);
 }
 
 int main(void)
 {
-    cout << "欢迎来到迷宫老鼠1.0版本!\n是否需要显示迷宫寻径的具体流程？(Y/N)" << endl;
+    cout << "Whether or not to show the wayfinding process(Y/N)" << endl;
     char input;
     cin >> input;
     int show; //是否展示迷宫寻径流程，1展示，0不展示
@@ -251,5 +252,6 @@ int main(void)
     myMaze->FindPath();
     myMaze->DrawPath();
 
+    system("pause");
     return 0;
 }
