@@ -1,6 +1,7 @@
 #include <Windows.h>
 #include <iostream>
 #include <stack>
+#include <ctime>
 
 using namespace std;
 
@@ -61,26 +62,27 @@ Maze::Maze(int row, int col, int show)
     offset[3].col = 0; //向上
 
     //输入迷宫的地图数据
-    int mazeData[10][10] =
-        {
-            {0, 1, 1, 1, 1, 1, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 1, 0, 1, 0, 0},
-            {0, 0, 0, 1, 0, 1, 0, 0, 0, 0},
-            {0, 1, 0, 1, 0, 1, 0, 1, 1, 0},
-            {0, 1, 0, 1, 0, 1, 0, 1, 0, 0},
-            {0, 1, 1, 1, 0, 1, 0, 1, 0, 1},
-            {0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-            {0, 0, 0, 1, 1, 0, 0, 1, 0, 0},
-            {1, 0, 0, 0, 0, 0, 0, 1, 0, 0},
-            {0, 0, 0, 0, 1, 0, 0, 1, 0, 0},
-        };
+    int mazeData[10][10];
+    //设置迷宫的复杂度,复杂提高会导致找不到路径的概率大幅上升 0-9
+    int temp;
+    cout << "Set the complexity of the maze (0-9, increasing the complexity considerably may generate a dead maze):";
+    cin >> temp;
+    const int maze_complexity = temp;
 
+    srand((unsigned)time(NULL));
     //将迷宫数据导入迷宫数组中
     for (int i = 0; i < row; i++)
     {
         for (int j = 0; j < col; j++)
         {
-            maze[i + 1][j + 1] = mazeData[i][j];
+            //maze[i + 1][j + 1] = mazeData[i][j];
+            maze[i + 1][j + 1] = (rand() % 9) + 1; //随机生成1-9的数字
+            if (maze[i + 1][j + 1] <= maze_complexity)
+            {
+                maze[i + 1][j + 1] = 1;
+            }
+            else
+                maze[i + 1][j + 1] = 0;
         }
     }
 
@@ -227,11 +229,10 @@ void Maze::DrawPath()
 
     if (show)
     {
-        for (int t = 0; t < 30; t++)
-            cout << endl;
+        cout << endl;
     }
     cout << endl
-         << "Maze path:" << endl;
+         << "Maze path：" << endl;
     ShowArray(mazeShow, row + 2, col + 2);
 }
 
@@ -252,6 +253,5 @@ int main(void)
     myMaze->FindPath();
     myMaze->DrawPath();
 
-    system("pause");
     return 0;
 }
