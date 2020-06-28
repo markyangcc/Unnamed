@@ -1,3 +1,8 @@
+/*需要安装pcap库，
+命令行运行
+example : powershell : .\ipparse.exe 1 3 | tee logfile.txt
+
+ */
 #include <cstdio>
 #include <iostream>
 #include <Winsock2.h>

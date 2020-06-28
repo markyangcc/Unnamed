@@ -15,67 +15,28 @@ struct sNode
     struct sNode *next;
 };
 
-void push(struct sNode **top_ref, struct tNode *t);
-struct tNode *pop(struct sNode **top_ref);
-struct tNode *peek(struct sNode *top_ref);
-bool isEmpty(struct sNode *top);
+void push(struct sNode **top_ref, struct tNode *t); //入栈
+struct tNode *pop(struct sNode **top_ref);          //出栈
+struct tNode *peek(struct sNode *top_ref);          //取栈顶元素
+struct tNode *newtNode(int data);                   //分配新结点
+bool isEmpty(struct sNode *top);                    //判断栈空
+void postorder(struct tNode *root);                 //后序遍历
 
-void inorder(struct tNode *root)
+int main(void)
 {
+    struct tNode *root = newtNode('a');
+    root->left = newtNode('b');
+    root->right = newtNode('c');
+    root->left->left = newtNode('c');
+    root->left->right = newtNode('d');
+    root->left->right->left = newtNode('e');
+    root->left->right->right = newtNode('f');
+    root->left->right->left->right = newtNode('g');
 
-    struct tNode *current = root;
-    struct sNode *s = NULL; // Initialize stack s
-    bool done = 0;
+    printf("\npostorder display:\n");
+    postorder(root);
 
-    while (!done)
-    {
-
-        if (current != NULL) // Reach the left most tNode of the current tNode
-        {
-
-            push(&s, current); // place pointer to a tree node on the stack before traversing the node's left subtree
-            current = current->left;
-        }
-        else
-        {
-            if (!isEmpty(s))
-            {
-                current = pop(&s);
-                printf("%c ", current->data);
-
-                current = current->right; //we have visited the node and its left subtree. Now, it's right subtree's turn
-            }
-            else
-                done = 1;
-        }
-    }
-}
-
-void preorder(struct tNode *root)
-{
-    struct tNode *current = root;
-    struct sNode *s = NULL;
-    bool done = false;
-
-    while (!done)
-    {
-        if (current != NULL)
-        {
-            printf("%c ", current->data);
-            push(&s, current);
-            current = current->left;
-        }
-        else
-        {
-            if (!isEmpty(s))
-            {
-                current = pop(&s);
-                current = current->right;
-            }
-            else
-                done = true;
-        }
-    }
+    return 0;
 }
 
 void postorder(struct tNode *root)
@@ -144,6 +105,7 @@ struct tNode *pop(struct sNode **top_ref)
         return res;
     }
 }
+
 struct tNode *peek(struct sNode *top_ref)
 {
     return top_ref->t;
@@ -158,25 +120,4 @@ struct tNode *newtNode(int data)
     tNode->right = NULL;
 
     return (tNode);
-}
-
-int main(void)
-{
-    struct tNode *root = newtNode('a');
-    root->left = newtNode('b');
-    root->right = newtNode('c');
-    root->left->left = newtNode('c');
-    root->left->right = newtNode('d');
-    root->left->right->left = newtNode('e');
-    root->left->right->right = newtNode('f');
-    root->left->right->left->right = newtNode('g');
-
-    printf("preorder display :\n");
-    preorder(root);
-    printf("\ninorder display:\n");
-    inorder(root);
-    printf("\npostorder display:\n");
-    postorder(root);
-
-    return 0;
 }
