@@ -17,6 +17,7 @@ int push(LinkStack top, char e);	//进栈操作
 int pop(LinkStack top, char *e);	//出栈操作
 int stacklength(LinkStack top);		//求表长操作
 void freestack(LinkStack top);		//销毁链表
+
 int checkbalanced(char e, char ch); //判断括号
 
 int main(void)

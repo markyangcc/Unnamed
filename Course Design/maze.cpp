@@ -61,8 +61,6 @@ Maze::Maze(int row, int col, int show)
     offset[3].row = -1;
     offset[3].col = 0; //向上
 
-    //输入迷宫的地图数据
-    int mazeData[10][10];
     //设置迷宫的复杂度,复杂提高会导致找不到路径的概率大幅上升 0-9
     int temp;
     cout << "Set the complexity of the maze (0-9, increasing the complexity considerably may generate a dead maze):";
@@ -75,7 +73,7 @@ Maze::Maze(int row, int col, int show)
     {
         for (int j = 0; j < col; j++)
         {
-            //maze[i + 1][j + 1] = mazeData[i][j];
+
             maze[i + 1][j + 1] = (rand() % 9) + 1; //随机生成1-9的数字
             if (maze[i + 1][j + 1] <= maze_complexity)
             {
@@ -86,7 +84,7 @@ Maze::Maze(int row, int col, int show)
         }
     }
 
-    //在迷宫外增加一圈障碍物
+    //在迷宫外增加一圈障碍物/墙
     for (int r = 0; r <= row + 1; r++)
     {
         maze[0][r] = maze[row + 1][r] = 1;
@@ -96,6 +94,7 @@ Maze::Maze(int row, int col, int show)
         maze[c][0] = maze[c][col + 1] = 1;
     }
 
+    //拷贝一份迷宫到mazeshow
     for (int i = 0; i < row + 2; i++)
     {
         for (int j = 0; j < col + 2; j++)
@@ -165,7 +164,7 @@ bool Maze::FindPath()
     int LastOption = 3; //最后一个方向选择
 
     //寻找一条路径
-    while (here.row != row || here.col != col)
+    while (here.row != row || here.col != col) //没有到达边界时
     {
         //寻找并且移动到一个相邻的位置
         int r, c;
@@ -188,16 +187,16 @@ bool Maze::FindPath()
             here.row = r;
             here.col = c;
 
-            //设置障碍物以阻止再次访问
+            //设置障碍物以阻止再次访问，进入死循环
             maze[r][c] = 4;
             option = 0;
         }
         else
         {
-            //没有可用的相邻位置，回溯上一个节点
+            //栈空代表无路可走
             if (path.empty())
                 return false;
-
+            //没有可用的相邻位置，回溯上一个节点
             Position next = path.top();
             path.pop();
 
