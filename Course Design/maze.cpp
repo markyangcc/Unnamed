@@ -1,3 +1,12 @@
+/*
+ * @Author: Yang Guang Sheng (杨广升)
+ * @Date: 2020-06-28 18:19:39
+ * @LastEditTime: 2020-06-30 01:58:35
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \Visual Cc:\Visual Studio Code\Unnamed\Course Design\check brackets balance.c
+ */ 
+
 #include <Windows.h>
 #include <iostream>
 #include <stack>
