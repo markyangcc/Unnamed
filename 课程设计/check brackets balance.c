@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <string.h>
+#define MAXSIZE 50
 
 typedef struct Node
 {
@@ -27,7 +28,7 @@ int main(void)
 	initstack(&S);
 	printf("Input algorithm expressions(),[],{}:");
 
-	gets(ch);
+	fgets(ch, MAXSIZE, stdin);
 	p = ch;
 	while (*p)
 	{
@@ -64,35 +65,25 @@ int main(void)
 		}
 	}
 	if (isempty(S))
-	{
 		printf("brackets matched.\n");
-	}
 	else
-	{
 		printf("Missing right bracket.\n");
-	}
 	return 0;
 }
 
 void initstack(LinkStack *top) //将链栈初始化
 {
 	if ((*top = (LinkStack)malloc(sizeof(LStackNode))) == NULL)
-	{
 		exit(-1);
-	}
 	(*top)->next = NULL;
 }
 
 int isempty(LinkStack top) //判断链栈是否为空
 {
 	if (top->next == NULL)
-	{
 		return 1;
-	}
 	else
-	{
 		return 0;
-	}
 }
 
 int peek(LinkStack top, char *e) //取栈顶元素
@@ -165,19 +156,11 @@ void freestack(LinkStack top) //销毁链表
 int checkbalanced(char e, char ch)
 {
 	if (e == '(' && ch == ')')
-	{
 		return 1;
-	}
 	else if (e == '[' && ch == ']')
-	{
 		return 1;
-	}
 	else if (e == '{' && ch == '}')
-	{
 		return 1;
-	}
 	else
-	{
 		return 0;
-	}
 }

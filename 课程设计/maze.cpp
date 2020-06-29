@@ -110,7 +110,7 @@ Maze::Maze(int row, int col, int show)
     }
     cout << endl
          << "Map of the original maze:" << endl;
-    // << "原始的迷宫地图：" << endl;
+
     ShowArray(maze, row + 2, col + 2);
 }
 
@@ -232,7 +232,7 @@ void Maze::DrawPath()
         cout << endl;
     }
     cout << endl
-         << "Maze path：" << endl;
+         << "Maze path: " << endl;
     ShowArray(mazeShow, row + 2, col + 2);
 }
 
