@@ -1,10 +1,10 @@
 /*
  * @Author: Yang Guang Sheng (杨广升)
- * @Date: 2020-06-28 18:19:39
- * @LastEditTime: 2020-06-30 01:58:08
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \Visual Cc:\Visual Studio Code\Unnamed\Course Design\check brackets balance.c
+ * @Date: 2020-06-20 18:28:58
+ * @LastEditTime: 2020-06-30 02:31:18
+ * @LastEditors: Yang Guang Sheng (杨广升)
+ * @Description: None
+ * @FilePath: \Visual Cc:\Visual Studio Code\Unnamed\Course Design\tree non recursion.c
  */ 
 
 #include <stdio.h>
