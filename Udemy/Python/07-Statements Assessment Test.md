@@ -12,6 +12,7 @@ st = 'Print only the words that start with s in this sentence'
 
 ```python
 #Code here
+#Use lowercase() if need
 for i in st.split():
     if i.startswith('s'):
         print(i)  
@@ -96,62 +97,116 @@ ____
 #Code in this cell
 for i in range(1,101):
     if i%15 == 0:
-        print('{} FizzBuzz'.format(i))
+        print('FizzBuzz')
+    elif i%3 == 0:
+        print('Fizz')
         continue
-    if i%3 == 0:
-        print('{} Fizz'.format(i))
-        continue
-    if i%5 == 0:
-         print('{} Buzz'.format(i))
+    elif i%5 == 0:
+         print('Buzz')
+    else:
+         print('{}'.format(i))
 ```
 
-    3 Fizz
-    5 Buzz
-    6 Fizz
-    9 Fizz
-    10 Buzz
-    12 Fizz
-    15 FizzBuzz
-    18 Fizz
-    20 Buzz
-    21 Fizz
-    24 Fizz
-    25 Buzz
-    27 Fizz
-    30 FizzBuzz
-    33 Fizz
-    35 Buzz
-    36 Fizz
-    39 Fizz
-    40 Buzz
-    42 Fizz
-    45 FizzBuzz
-    48 Fizz
-    50 Buzz
-    51 Fizz
-    54 Fizz
-    55 Buzz
-    57 Fizz
-    60 FizzBuzz
-    63 Fizz
-    65 Buzz
-    66 Fizz
-    69 Fizz
-    70 Buzz
-    72 Fizz
-    75 FizzBuzz
-    78 Fizz
-    80 Buzz
-    81 Fizz
-    84 Fizz
-    85 Buzz
-    87 Fizz
-    90 FizzBuzz
-    93 Fizz
-    95 Buzz
-    96 Fizz
-    99 Fizz
-    100 Buzz
+    1
+    2
+    Fizz
+    4
+    Buzz
+    Fizz
+    7
+    8
+    Fizz
+    Buzz
+    11
+    Fizz
+    13
+    14
+    FizzBuzz
+    16
+    17
+    Fizz
+    19
+    Buzz
+    Fizz
+    22
+    23
+    Fizz
+    Buzz
+    26
+    Fizz
+    28
+    29
+    FizzBuzz
+    31
+    32
+    Fizz
+    34
+    Buzz
+    Fizz
+    37
+    38
+    Fizz
+    Buzz
+    41
+    Fizz
+    43
+    44
+    FizzBuzz
+    46
+    47
+    Fizz
+    49
+    Buzz
+    Fizz
+    52
+    53
+    Fizz
+    Buzz
+    56
+    Fizz
+    58
+    59
+    FizzBuzz
+    61
+    62
+    Fizz
+    64
+    Buzz
+    Fizz
+    67
+    68
+    Fizz
+    Buzz
+    71
+    Fizz
+    73
+    74
+    FizzBuzz
+    76
+    77
+    Fizz
+    79
+    Buzz
+    Fizz
+    82
+    83
+    Fizz
+    Buzz
+    86
+    Fizz
+    88
+    89
+    FizzBuzz
+    91
+    92
+    Fizz
+    94
+    Buzz
+    Fizz
+    97
+    98
+    Fizz
+    Buzz
 
 
 ____
