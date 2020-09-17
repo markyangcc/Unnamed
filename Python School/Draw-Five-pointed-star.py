@@ -1,4 +1,7 @@
-import turtle
+from turtle import Screen, Turtle
+
+screen = Screen()
+turtle = Turtle()
 
 # Set up pensize, pencolor, fillcolor
 turtle.pensize(0.1)
@@ -18,4 +21,4 @@ for _ in range(5):
 # End up filling color
 turtle.end_fill()
 
-turtle.mainloop()
+screen.mainloop()
