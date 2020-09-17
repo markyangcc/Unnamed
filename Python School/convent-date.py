@@ -1,3 +1,5 @@
+# 将8位字符串转化为 year-month-day
+
 def convent_date(st):
 
     year = st[0:4]

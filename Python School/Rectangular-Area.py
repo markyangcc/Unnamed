@@ -1,3 +1,5 @@
+# 计算三角形面积
+
 # Define function
 def rect_area(length, width):
 

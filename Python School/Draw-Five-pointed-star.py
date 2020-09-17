@@ -1,3 +1,5 @@
+# 使用turtle模块画一个三角形
+
 from turtle import Screen, Turtle
 
 screen = Screen()
