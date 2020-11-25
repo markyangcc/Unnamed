@@ -13,7 +13,6 @@ MyString::MyString(const char *st) {
   strcpy(str, st);
 }
 
-MyString::~MyString() = default;
 
 MyString MyString::MyStrcat(MyString &st) {
 
