@@ -1,3 +1,0 @@
-/home/mark/Documents/Code/Unnamed/C_Cpp Language/MyString/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/mark/Documents/Code/Unnamed/C_Cpp Language/MyString/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/mark/Documents/Code/Unnamed/C_Cpp Language/MyString/cmake-build-debug/CMakeFiles/MyString.dir
